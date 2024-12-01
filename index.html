@@ -1,0 +1,431 @@
+Nov 27 version
+<br>
+
+<!DOCTYPE html>
+
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>French Drill</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        #level { position: absolute; top: 10px; right: 10px; font-size: 30px; font-weight: bold; }
+        #question { margin-bottom: 50px;  font-size: 80px;
+            font-size: 80px; /* Change this value to increase or decrease the font size */
+        }
+        #questionContainer { margin-top: 90px; }
+        
+        #questionImage { 
+        max-width: 400px; /* Maximum width of the image */
+        max-height: 300px; /* Maximum height of the image */
+        width: auto; /* Maintain aspect ratio */
+        height: auto; /* Maintain aspect ratio */
+        display: block; /* Ensures the image is a block-level element */
+        margin: 0 auto; /* Center the image */
+    }
+
+
+
+
+
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="userInput">
+            <h3>Type in your name and press enter to start</h3>
+            <input type="text" id="nameInput" placeholder="Enter Name" autofocus>
+            
+            <p id="output"></p>
+        </div>
+        <div id="quiz" style="display: none;">
+<img id="questionImage" style="max-width: 50%; height: auto; margin-bottom: 15px;" src="" alt="Question image" />
+            <div id="level">Level: 1</div>
+            <div id="question">Question goes here</div>
+            <input type="text" id="inputBox" placeholder="Type your answer here" disabled />
+            <div id="feedback"></div>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+
+//November 27 2024 Version
+         
+
+
+ { question: 'I have - j\'____ <br> I have two loves', answer: 'ai' },
+  { question: 'you have <br> two letters starts with a <br> tu____', answer: 'as' },
+  { question: 'he, she, it has <br> (alphabet) <br> il elle ____', answer: 'a' },
+  { question: 'we have <br> un avion <br>  nous ____', answer: 'avons' },
+  { question: 'you have (formal) <br> du lait <br> vous ____', answer: 'avez' },{ question: 'they have <br> not off but...<br>  ils elles ____', answer: 'ont' },
+  { question: 'I have - j\'____ I have two loves', answer: 'ai' },
+
+//etre to be
+{ question: 'I am - je ____ desole', answer: 'suis' },
+{ question: 'you are <br>   <br> tu e____', answer: 'es' },
+{ question: 'he, she, it is <br> (west) <br> il elle ____', answer: 'est' },
+{ question: 'we are <br> sommeliers - Nous sommes un grand pays <br> nous ____', answer: 'sommes' },
+{ question: 'you are  <br>lettuce<br>  vous ____ <br> (the e has a hat)', answer: 'etes' },
+{ question: 'they are (sonny) ils elles ____', answer: 'sont' },
+
+
+
+//aller to go
+{ question: 'I go - je v____', answer: 'vais' },
+{ question: 'you go  <br> tu v____', answer: 'vas' },
+{ question: 'he, she, it goes  il elle v____', answer: 'va' },
+{ question: 'we go  nous a____ to Allons', answer: 'allons' },
+{ question: 'you go  vous a____', answer: 'allez' },
+{ question: 'they go  ils elles v____', answer: 'vont' },
+
+
+//faire to do or make
+{ question: 'I do/make - je f____', answer: 'fais' },
+{ question: 'you do/make  <br> tu f____', answer: 'fais' },
+{ question: 'he, she, it does/makes  il elle f____t', answer: 'fait' },
+{ question: 'we do/make - Nous faisons de grands enfants -   nous ____', answer: 'faisons' },
+{ question: 'you do/make  vous ____', answer: 'faites' },
+{ question: 'they do/make  ils ils font des gâteaux they make cakes -  elles ____', answer: 'font' },
+
+
+
+
+
+
+
+//voir to see
+  { question: 'I see - je v____ je vois mon ami', answer: 'vois' },
+{ question: 'you see  <br> tu v____', answer: 'vois' },
+{ question: 'he, she, it sees  il elle v____t', answer: 'voit' },
+{ question: 'we see  nous ____', answer: 'voyons' },
+{ question: 'you see  vous ____', answer: 'voyez' },
+{ question: 'they see  ils elles ____', answer: 'voient' },
+
+
+
+
+  { question: "vouloir - to _____", answer: "want" },
+
+
+//vouloir to want
+  { question: 'I want - je v____', answer: 'veux' },
+{ question: 'you want  <br> tu v____', answer: 'veux' },
+{ question: 'he, she, it wants  il elle v____t', answer: 'veut' },
+{ question: 'we want  nous ____', answer: 'voulons' },
+{ question: 'you want  vous ____', answer: 'voulez' },
+{ question: 'they want  ils elles ____', answer: 'veulent' },
+
+
+
+
+{ question: "venir - to _____", answer: "come" },
+
+//venir to come
+{ question: 'I come - je v____', answer: 'viens' },
+{ question: 'you come  <br> tu v____', answer: 'viens' },
+{ question: 'he, she, it comes  il elle v____t', answer: 'vient' },
+{ question: 'we come  nous ____', answer: 'venons' },
+{ question: 'you come  vous ____', answer: 'venez' },
+{ question: 'they come  ils elles ____', answer: 'viennent' },
+
+
+
+{ question: "devoir - to _____", answer: "must" },
+//devoir to have, must
+{ question: 'I have to - je d____', answer: 'dois' },
+{ question: 'you have to  <br> tu d____', answer: 'dois' },
+{ question: 'he, she, it has to  il elle d____t', answer: 'doit' },
+{ question: 'we have to  nous ____', answer: 'devons' },
+{ question: 'you have to  vous ____', answer: 'devez' },
+{ question: 'they have to  ils elles ____', answer: 'doivent' },
+
+
+
+// prendre to take
+{ question: 'I take - je p____ <br> Example: je prends le train.', answer: 'prends' },
+{ question: 'you take  <br> tu p____ <br> Example: tu prends une pomme.', answer: 'prends' },
+{ question: 'he, she, it takes  il elle p____ <br> Example: il prend un café.', answer: 'prend' },
+{ question: 'we take  nous ____ <br> Example: nous prenons un taxi.', answer: 'prenons' },
+{ question: 'you take  vous ____ <br> Example: vous prenez un stylo.', answer: 'prenez' },
+{ question: 'they take  ils elles ____ <br> Example: ils prennent des photos.', answer: 'prennent' },
+
+
+// trouver to find
+
+{ question: "trouver - to _____", answer: "find" },
+
+{ question: 'I find - je t____ <br> Example: je trouve mes clés.', answer: 'trouve' },
+{ question: 'you find  <br> tu t____ <br> Example: tu trouves une solution.', answer: 'trouves' },
+{ question: 'he, she, it finds  il elle t____ <br> Example: il trouve un travail.', answer: 'trouve' },
+{ question: 'we find  nous ____ <br> Example: nous trouvons une maison.', answer: 'trouvons' },
+{ question: 'you find  vous ____ <br> Example: vous trouvez votre chemin.', answer: 'trouvez' },
+{ question: 'they find  ils elles ____ <br> Example: ils trouvent des idées.', answer: 'trouvent' },
+
+
+
+
+
+
+{ question: "donner - to _____", answer: "give" },
+// donner to give
+{ question: 'I give - je d____ <br> Example: je ______ un cadeau.', answer: 'donne' },
+{ question: 'you give  <br> tu d____ <br> Example: tu _______ des conseils.', answer: 'donnes' },
+{ question: 'he, she, it gives  il elle d____ <br> Example: il _______ un livre.', answer: 'donne' },
+{ question: 'we give  nous ____ <br> Example: nous _______ de l\'argent.', answer: 'donnons' },
+{ question: 'you give  vous ____ <br> Example: vous ________ votre opinion.', answer: 'donnez' },
+{ question: 'they give  ils elles ____ <br> Example: ils _______ des fleurs.', answer: 'donnent' },
+
+
+
+
+
+
+
+{ question: "parler - to _____", answer: "speak" },
+
+// parler - to speak
+{ question: 'I speak - je p____ <br> Example: je ______ français.', answer: 'parle' },
+{ question: 'you speak  <br> tu p____ <br> Example: tu _______ anglais.', answer: 'parles' },
+{ question: 'he, she, it speaks  il elle p____ <br> Example: il _______ espagnol.', answer: 'parle' },
+{ question: 'we speak  nous ____ <br> Example: nous _______ avec nos amis.', answer: 'parlons' },
+{ question: 'you speak  vous ____ <br> Example: vous ________ en public.', answer: 'parlez' },
+{ question: 'they speak  ils elles ____ <br> Example: ils _______ doucement.', answer: 'parlent' },
+
+
+
+
+
+
+{ question: "regarder - to _____", answer: "watch" },
+// regarder - to watch
+{ question: 'I watch - je r____ <br> Example: je ______ la télévision.', answer: 'regarde' },
+{ question: 'you watch  <br> tu r____ <br> Example: tu _______ un film.', answer: 'regardes' },
+{ question: 'he, she, it watches  il elle r____ <br> Example: il _______ les étoiles.', answer: 'regarde' },
+{ question: 'we watch  nous ____ <br> Example: nous _______ un match de football.', answer: 'regardons' },
+{ question: 'you watch  vous ____ <br> Example: vous ________ une série.', answer: 'regardez' },
+{ question: 'they watch  ils elles ____ <br> Example: ils _______ des vidéos.', answer: 'regardent' },
+
+
+
+
+{ question: "mettre (put a meter in front of you) - to _____", answer: "put" },
+{ question: "savoir - to _____", answer: "know" },
+{ question: "passer - to _____", answer: "pass" },
+
+{ question: "aimer - to _____", answer: "love" },
+{ question: "croire - to _____", answer: "think" },
+{ question: "demander - to _____", answer: "ask" },
+{ question: "rester - to _____", answer: "stay" },
+{ question: "répondre - to _____", answer: "answer" },
+{ question: "entendre - to _____", answer: "hear" },
+{ question: "penser - to _____", answer: "think" },
+{ question: "arriver - to _____", answer: "come" },
+{ question: "connaître - to _____", answer: "know" },
+{ question: "devenir - to _____", answer: "become" },
+{ question: "sentir - to _____", answer: "feel" },
+{ question: "sembler - to _____", answer: "seem" },
+{ question: "laisser - to _____", answer: "leave" },
+{ question: "rendre - to _____", answer: "return" },
+{ question: "tenir - to _____", answer: "hold" },
+{ question: "vivre - to _____", answer: "live" },
+{ question: "montrer - to _____", answer: "show" },
+{ question: "continuer - to _____", answer: "keep" },
+{ question: "commencer - to _____", answer: "start" },
+{ question: "suivre - to _____", answer: "follow" },
+{ question: "apprendre - to _____", answer: "learn" },
+{ question: "comprendre - to _____", answer: "get" },
+{ question: "porter - to _____", answer: "wear" },
+{ question: "chercher - to _____", answer: "find" },
+{ question: "sortir - to _____", answer: "exit" },
+{ question: "écrire - to _____", answer: "write" },
+{ question: "appeler - to _____", answer: "call" },
+{ question: "jouer - to _____", answer: "play" },
+{ question: "gagner - to _____", answer: "win" },
+{ question: "payer - to _____", answer: "pay" },
+{ question: "oublier - to _____", answer: "forget" },
+{ question: "travailler - to _____", answer: "work" },
+{ question: "lire - to _____", answer: "read" },
+{ question: "ouvrir - to _____", answer: "open" },
+{ question: "arrêter - to _____", answer: "stop" },
+{ question: "manger - to _____", answer: "eat" },
+{ question: "boire - to _____", answer: "drink" },
+{ question: "aider - to _____", answer: "help" },
+{ question: "courir - to _____", answer: "run" },
+{ question: "acheter - to _____", answer: "buy" },
+{ question: "changer - to _____", answer: "change" },
+{ question: "expliquer - to _____", answer: "show" },
+{ question: "préférer - to _____", answer: "like" },
+{ question: "dormir - to _____", answer: "sleep" },
+{ question: "choisir - to _____", answer: "pick" },
+{ question: "perdre - to _____", answer: "lose" },
+{ question: "compter - to _____", answer: "count" },
+{ question: "attendre - to _____", answer: "wait" },
+{ question: "servir - to _____", answer: "serve" },
+{ question: "fermer - to _____", answer: "close" },
+{ question: "se lever - to _____", answer: "rise" },
+{ question: "s'amuser - to _____", answer: "enjoy" },
+{ question: "marcher - to _____", answer: "walk" },
+{ question: "chanter - to _____", answer: "sing" },
+{ question: "danser - to _____", answer: "dance" },
+{ question: "remplir - to _____", answer: "fill" },
+{ question: "envoyer - to _____", answer: "send" },
+{ question: "permettre - to _____", answer: "allow" },
+{ question: "cuisiner - to _____", answer: "cook" },
+{ question: "conduire - to _____", answer: "drive" },
+{ question: "discuter - to _____", answer: "talk" },
+{ question: "habiter - to _____", answer: "live" },
+{ question: "rêver - to _____", answer: "dream" },
+{ question: "enseigner - to _____", answer: "teach" },
+{ question: "toucher - to _____", answer: "touch" },
+{ question: "pleurer - to _____", answer: "cry" },
+{ question: "réussir - to _____", answer: "win" },
+{ question: "falloir (i need to fall) - to _____", answer: "need" },
+
+
+
+
+
+            // Add more questions as needed
+        ];
+
+        let currentLevel = 1;
+        let currentQuestionIndex = 0;
+        let timer;
+        let answerTimeout;
+        const totalTime = 60000; // 60 seconds for the entire drill
+        const answerDelay = 5000; // 5 seconds before showing correct answer
+
+
+
+        async function startDrill() {
+            const name = document.getElementById("nameInput").value.trim();
+            if (!name) {
+                document.getElementById("output").textContent = "Please enter a name.";
+                return;
+            }
+
+            try {
+                const response = await fetch(`https://script.google.com/macros/s/AKfycbySL-Nwv6Oa-Nghdxq9LiZBBGYeQPUhXKTar4yFZUTv54PVcHyOdfgtTRR_IDLkOwWd_g/exec?name=${encodeURIComponent(name)}`);
+                const data = await response.json();
+
+                if (data.error) {
+                    document.getElementById("output").textContent = data.error;
+                } else {
+                    currentLevel = parseInt(data.level);
+                    document.getElementById("output").textContent = "";
+                    document.getElementById("userInput").style.display = "none";
+                    document.getElementById("quiz").style.display = "block";
+                    document.getElementById("level").textContent = `Level: ${currentLevel}`;
+                    document.getElementById("inputBox").disabled = false; // Enable input box
+                    loadQuestion();
+                    startTimer(); // Start the overall drill timer
+                }
+            } catch (error) {
+                document.getElementById("output").textContent = "An error occurred while retrieving the level.";
+                console.error(error);
+            }
+        }
+
+        function startTimer() {
+            timer = setTimeout(() => {
+                alert("Time is up! Submitting your progress.");
+                submitDetails();
+                endDrill(); // End the drill completely
+            }, totalTime);
+        }
+
+        function loadQuestion() {
+            const levelQuestions = questions.slice(currentLevel - 1, currentLevel + 15);
+            const question = levelQuestions[currentQuestionIndex];
+            document.getElementById('question').innerHTML = ` ${question.question}`;
+if (question.imageUrl) {
+    document.getElementById('questionImage').src = question.imageUrl;
+    document.getElementById('questionImage').style.display = "block";
+} else {
+    document.getElementById('questionImage').style.display = "none";
+}
+            setAnswerTimeout(question.answer); // Set timeout to show the correct answer
+            focusInput(); // Automatically focus input box
+        }
+
+        function setAnswerTimeout(correctAnswer) {
+            clearTimeout(answerTimeout);
+            answerTimeout = setTimeout(() => {
+                alert(`The correct answer was: "${correctAnswer}". Please try again.`);
+                document.getElementById("feedback").textContent = "Retry with the correct answer.";
+            }, answerDelay);
+        }
+
+        function checkAnswer() {
+            const inputBox = document.getElementById('inputBox');
+            const userAnswer = inputBox.value.trim().toLowerCase();
+            const correctAnswer = questions[currentLevel - 1 + currentQuestionIndex].answer.toLowerCase();
+
+            if (userAnswer === correctAnswer) {
+                document.getElementById('feedback').textContent = "Correct!";
+                inputBox.value = ""; // Clear input
+                clearTimeout(answerTimeout); // Cancel timeout if correct
+                moveToNextQuestion();
+            } else {
+                document.getElementById('feedback').textContent = "Incorrect. Try again!";
+            }
+        }
+
+        function moveToNextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex >= 15) {
+                currentQuestionIndex = 0;
+                currentLevel++;
+                document.getElementById("level").textContent = `Level: ${currentLevel}`;
+            }
+            loadQuestion();
+        }
+
+        function focusInput() {
+            const inputBox = document.getElementById('inputBox');
+            inputBox.focus(); // Automatically focus on the input box
+        }
+
+        function submitDetails() {
+            clearTimeout(timer);
+            const formData = {
+                name: document.getElementById("nameInput").value.trim(),
+                level: currentLevel
+            };
+
+            fetch('https://script.google.com/macros/s/AKfycbzWoE2NrNffSm_AZdAe1sykhKAVelPYaY4rO9GnoBTDvTPAXqPB9gv0-00PvQ16D_kJ/exec', {
+                method: 'POST',
+                mode: 'no-cors',
+                cache: 'no-cache',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(() => alert('Progress submitted successfully!'))
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while submitting progress.');
+            });
+        }
+
+        function endDrill() {
+            document.getElementById("quiz").style.display = "none";
+            document.getElementById("output").textContent = "Drill ended. Thank you for participating!";
+        }
+
+        document.getElementById('inputBox').addEventListener('input', checkAnswer);
+
+        document.getElementById("nameInput").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                startDrill();
+            }
+        });
+    </script>
+</body>
+</html>
