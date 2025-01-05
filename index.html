@@ -1,305 +1,2506 @@
-Nov 27 version
-<br>
-
 <!DOCTYPE html>
-
-
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>French Drill</title>
+    <title>Math Drill</title>
     <style>
         body { font-family: Arial, sans-serif; }
-        #level { position: absolute; top: 10px; right: 10px; font-size: 30px; font-weight: bold; }
-        #question { margin-bottom: 50px;  font-size: 80px;
-            font-size: 80px; /* Change this value to increase or decrease the font size */
-        }
+        #level { position: absolute; top: 10px; right: 10px; font-size: 30px; font-weight: bold; margin-bottom: 20px; }
+        #question { margin-top: 40px; margin-bottom: 50px; font-size: 40px; }
         #questionContainer { margin-top: 90px; }
-        
         #questionImage { 
-        max-width: 400px; /* Maximum width of the image */
-        max-height: 300px; /* Maximum height of the image */
-        width: auto; /* Maintain aspect ratio */
-        height: auto; /* Maintain aspect ratio */
-        display: block; /* Ensures the image is a block-level element */
-        margin: 0 auto; /* Center the image */
-    }
-
-
-
-
-
-
+            max-width: 400px; 
+            max-height: 300px; 
+            width: auto; 
+            height: auto; 
+            display: block; 
+            margin: 0 auto; 
+        }
+        .choice { margin: 20px 0; padding: 30px; font-size: 28px; border: 3px solid #ccc; cursor: pointer; }
+        .choice:hover { background-color: #f0f0f0; }
     </style>
 </head>
 <body>
     <div class="container">
         <div id="userInput">
-            <h3>Type in your name and press enter to start</h3>
+            <h3>Type in your username and press enter to start. No spaces. No capital letters.</h3>
             <input type="text" id="nameInput" placeholder="Enter Name" autofocus>
-            
             <p id="output"></p>
         </div>
         <div id="quiz" style="display: none;">
-<img id="questionImage" style="max-width: 50%; height: auto; margin-bottom: 15px;" src="" alt="Question image" />
+            <img id="questionImage" style="max-width: 50%; height: auto; margin-bottom: 15px;" src="" alt="Question image" />
             <div id="level">Level: 1</div>
             <div id="question">Question goes here</div>
-            <input type="text" id="inputBox" placeholder="Type your answer here" disabled />
+            <div id="choices" style="display: none;"></div>
+            <input type="text" id="inputBox" placeholder="Type your answer here" disabled style="display: none;" />
             <div id="feedback"></div>
         </div>
     </div>
-
     <script>
         const questions = [
+            { question: "placeholder input problem type y = ", answer: "y", imageUrl: "https://i.postimg.cc/V5PP2LKD/9-x-13.gif" },
+     
+
+
+    {
+        "question": "I touch the painting gently. Je ____ doucement le tableau.",
+        "answer": "touche",
+        "options": ["touche", "pleure", "réussis", "faut"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You touch the keys of the piano. Tu ____ les touches du piano.",
+        "answer": "touches",
+        "options": ["pleures", "touches", "réussis", "faut"],
+        "imageUrl": ""
+    },
+    {
+        "question": "He touches the surface of the water. Il ____ la surface de l'eau.",
+        "answer": "touche",
+        "options": ["réussit", "touche", "pleure", "faut"],
+        "imageUrl": ""
+    },
+    {
+        "question": "We touch the artifacts in the museum. Nous ____ les artefacts dans le musée.",
+        "answer": "touchons",
+        "options": ["réussissons", "pleurons", "touchons", "faut"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You (formal) touch the fabric to feel its texture. Vous ____ le tissu pour sentir sa texture.",
+        "answer": "touchez",
+        "options": ["touchez", "réussissez", "pleurez", "faut"],
+        "imageUrl": ""
+    },
+    {
+        "question": "They touch the ground with their hands. Ils ____ le sol avec leurs mains.",
+        "answer": "touchent",
+        "options": ["faut", "pleurent", "réussissent", "touchent"],
+        "imageUrl": ""
+    },
+    {
+        "question": "I cry during sad movies. Je ____ pendant les films tristes.",
+        "answer": "pleure",
+        "options": ["pleure", "touche", "réussis", "faut"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You cry when you are overwhelmed. Tu ____ quand tu es submergé.",
+        "answer": "pleures",
+        "options": ["réussis", "pleures", "faut", "touches"],
+        "imageUrl": ""
+    },
+    {
+        "question": "He cries when he feels emotional. Il ____ quand il est ému.",
+        "answer": "pleure",
+        "options": ["pleure", "touche", "réussit", "faut"],
+        "imageUrl": ""
+    },
+    {
+        "question": "We cry together during emotional scenes. Nous ____ ensemble pendant les scènes émouvantes.",
+        "answer": "pleurons",
+        "options": ["faut", "réussissons", "pleurons", "touchons"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You (formal) cry at heartfelt moments. Vous ____ lors des moments émouvants.",
+        "answer": "pleurez",
+        "options": ["touchez", "pleurez", "faut", "réussissez"],
+        "imageUrl": ""
+    },
+    {
+        "question": "They cry out of joy. Ils ____ de joie.",
+        "answer": "pleurent",
+        "options": ["pleurent", "réussissent", "faut", "touchent"],
+        "imageUrl": ""
+    },
+    {
+        "question": "I win the competition. Je ____ la compétition.",
+        "answer": "réussis",
+        "options": ["réussis", "pleure", "touche", "faut"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You win because of your hard work. Tu ____ grâce à ton travail acharné.",
+        "answer": "réussis",
+        "options": ["faut", "réussis", "touches", "pleures"],
+        "imageUrl": ""
+    },
+    {
+        "question": "He wins every challenge. Il ____ chaque défi.",
+        "answer": "réussit",
+        "options": ["réussit", "faut", "pleure", "touche"],
+        "imageUrl": ""
+    },
+    {
+        "question": "We win as a team. Nous ____ en tant qu'équipe.",
+        "answer": "réussissons",
+        "options": ["pleurons", "réussissons", "touchons", "faut"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You (formal) win with determination. Vous ____ avec détermination.",
+        "answer": "réussissez",
+        "options": ["réussissez", "touchez", "faut", "pleurez"],
+        "imageUrl": ""
+    },
+    {
+        "question": "They win against all odds. Ils ____ contre toute attente.",
+        "answer": "réussissent",
+        "options": ["faut", "pleurent", "réussissent", "touchent"],
+        "imageUrl": ""
+    },
+    {
+        "question": "I need to complete this task today. Il ____ terminer cette tâche aujourd'hui.",
+        "answer": "faut",
+        "options": ["faut", "réussit", "pleure", "touche"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You need more time for the project. Il ____ plus de temps pour le projet.",
+        "answer": "faut",
+        "options": ["pleures", "faut", "réussis", "touches"],
+        "imageUrl": ""
+    },
+    {
+        "question": "He needs to focus on his studies. Il ____ se concentrer sur ses études.",
+        "answer": "faut",
+        "options": ["faut", "réussit", "pleure", "touche"],
+        "imageUrl": ""
+    },
+    {
+        "question": "We need to plan ahead. Il ____ planifier à l'avance.",
+        "answer": "faut",
+        "options": ["faut", "touchons", "réussissons", "pleurons"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You (formal) need to be careful. Il ____ être prudent.",
+        "answer": "faut",
+        "options": ["faut", "touchez", "pleurez", "réussissez"],
+        "imageUrl": ""
+    },
+    {
+        "question": "They need support from their team. Il ____ le soutien de leur équipe.",
+        "answer": "faut",
+        "options": ["réussissent", "pleurent", "touchent", "faut"],
+        "imageUrl": ""
+    },
+
+
+
+    {
+        "question": "I drive to work every day. Je ____ au travail tous les jours.",
+        "answer": "conduis",
+        "options": ["discute", "habite", "rêve", "conduis"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You drive carefully in the city. Tu ____ prudemment en ville.",
+        "answer": "conduis",
+        "options": ["habites", "enseignes", "rêves", "conduis"],
+        "imageUrl": ""
+    },
+    {
+        "question": "He drives a fast car. Il ____ une voiture rapide.",
+        "answer": "conduit",
+        "options": ["conduit", "discute", "rêve", "enseigne"],
+        "imageUrl": ""
+    },
+    {
+        "question": "We drive along the coast. Nous ____ le long de la côte.",
+        "answer": "conduisons",
+        "options": ["habitons", "conduisons", "rêvons", "enseignons"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You (formal) drive at night. Vous ____ la nuit.",
+        "answer": "conduisez",
+        "options": ["rêvez", "discutez", "habitez", "conduisez"],
+        "imageUrl": ""
+    },
+    {
+        "question": "They drive through the countryside. Ils ____ à travers la campagne.",
+        "answer": "conduisent",
+        "options": ["enseignent", "rêvent", "habitent", "conduisent"],
+        "imageUrl": ""
+    },
+    {
+        "question": "I talk about my ideas with my friends. Je ____ de mes idées avec mes amis.",
+        "answer": "discute",
+        "options": ["rêve", "discute", "habite", "enseigne"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You talk during the meeting. Tu ____ pendant la réunion.",
+        "answer": "discutes",
+        "options": ["discutes", "rêves", "conduis", "habites"],
+        "imageUrl": ""
+    },
+    {
+        "question": "He talks with the manager. Il ____ avec le directeur.",
+        "answer": "discute",
+        "options": ["enseigne", "habite", "discute", "rêve"],
+        "imageUrl": ""
+    },
+    {
+        "question": "We talk about the project. Nous ____ du projet.",
+        "answer": "discutons",
+        "options": ["enseignons", "rêvons", "habitons", "discutons"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You (formal) talk openly about your concerns. Vous ____ ouvertement de vos préoccupations.",
+        "answer": "discutez",
+        "options": ["conduisez", "enseignez", "discutez", "rêvez"],
+        "imageUrl": ""
+    },
+    {
+        "question": "They talk in the library. Ils ____ dans la bibliothèque.",
+        "answer": "discutent",
+        "options": ["habitent", "discutent", "enseignent", "rêvent"],
+        "imageUrl": ""
+    },
+
+
+    {
+        "question": "I sing in the choir every weekend. Je ____ dans la chorale tous les week-ends.",
+        "answer": "chante",
+        "options": ["chante", "danse", "remplis", "envoie"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You sing your favorite song. Tu ____ ta chanson préférée.",
+        "answer": "chantes",
+        "options": ["cuisines", "chantes", "permets", "remplis"],
+        "imageUrl": ""
+    },
+    {
+        "question": "He sings beautifully on stage. Il ____ magnifiquement sur scène.",
+        "answer": "chante",
+        "options": ["chante", "envoie", "danse", "remplit"],
+        "imageUrl": ""
+    },
+    {
+        "question": "We sing together at the festival. Nous ____ ensemble au festival.",
+        "answer": "chantons",
+        "options": ["chantons", "dansons", "remplissons", "permettons"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You (formal) sing for the audience. Vous ____ pour le public.",
+        "answer": "chantez",
+        "options": ["envoyez", "chantez", "cuisinez", "remplissez"],
+        "imageUrl": ""
+    },
+    {
+        "question": "They sing traditional songs. Ils ____ des chansons traditionnelles.",
+        "answer": "chantent",
+        "options": ["chantent", "permettent", "dansent", "remplissent"],
+        "imageUrl": ""
+    },
+    {
+        "question": "I dance at the party. Je ____ à la fête.",
+        "answer": "danse",
+        "options": ["danse", "chante", "remplis", "permets"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You dance gracefully. Tu ____ avec grâce.",
+        "answer": "danses",
+        "options": ["remplis", "danses", "cuisines", "envoies"],
+        "imageUrl": ""
+    },
+    {
+        "question": "He dances with his partner. Il ____ avec son partenaire.",
+        "answer": "danse",
+        "options": ["danse", "chante", "envoie", "remplit"],
+        "imageUrl": ""
+    },
+    {
+        "question": "We dance to the music. Nous ____ au rythme de la musique.",
+        "answer": "dansons",
+        "options": ["dansons", "remplissons", "cuisinons", "permettons"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You (formal) dance during the performance. Vous ____ pendant le spectacle.",
+        "answer": "dansez",
+        "options": ["chantez", "envoyez", "dansez", "permettez"],
+        "imageUrl": ""
+    },
+    {
+        "question": "They dance at the cultural event. Ils ____ lors de l'événement culturel.",
+        "answer": "dansent",
+        "options": ["remplissent", "dansent", "permettent", "chantent"],
+        "imageUrl": ""
+    },
+    {
+        "question": "I fill the glass with water. Je ____ le verre d'eau.",
+        "answer": "remplis",
+        "options": ["remplis", "chante", "cuisine", "danse"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You fill the form correctly. Tu ____ le formulaire correctement.",
+        "answer": "remplis",
+        "options": ["remplis", "envoyes", "danses", "permettes"],
+        "imageUrl": ""
+    },
+    {
+        "question": "He fills the bag with groceries. Il ____ le sac avec des courses.",
+        "answer": "remplit",
+        "options": ["remplit", "envoie", "cuisine", "permet"],
+        "imageUrl": ""
+    },
+    {
+        "question": "We fill the tank with gasoline. Nous ____ le réservoir d'essence.",
+        "answer": "remplissons",
+        "options": ["remplissons", "dansons", "permettons", "chantons"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You (formal) fill your cup. Vous ____ votre tasse.",
+        "answer": "remplissez",
+        "options": ["remplissez", "chantez", "cuisinez", "permettez"],
+        "imageUrl": ""
+    },
+    {
+        "question": "They fill the room with laughter. Ils ____ la pièce de rires.",
+        "answer": "remplissent",
+        "options": ["remplissent", "chantent", "permettent", "cuisinent"],
+        "imageUrl": ""
+    },
+
+    {
+        "question": "I wait for the bus every morning. J'____ le bus tous les matins.",
+        "answer": "attends",
+        "options": ["attends", "sers", "ferme", "marche"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You wait for your friend at the café. Tu ____ ton ami au café.",
+        "answer": "attends",
+        "options": ["s'amuses", "attends", "fermes", "se lèves"],
+        "imageUrl": ""
+    },
+    {
+        "question": "He waits for the train at the station. Il ____ le train à la gare.",
+        "answer": "attend",
+        "options": ["attend", "sert", "ferme", "s'amuse"],
+        "imageUrl": ""
+    },
+    {
+        "question": "We wait patiently for our turn. Nous ____ patiemment notre tour.",
+        "answer": "attendons",
+        "options": ["marchons", "attendons", "se levons", "fermons"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You (formal) wait in the lobby. Vous ____ dans le hall.",
+        "answer": "attendez",
+        "options": ["fermez", "servez", "attendez", "s'amusez"],
+        "imageUrl": ""
+    },
+    {
+        "question": "They wait for the results anxiously. Ils ____ les résultats avec anxiété.",
+        "answer": "attendent",
+        "options": ["attendent", "se lèvent", "s'amusent", "ferment"],
+        "imageUrl": ""
+    },
+    {
+        "question": "I serve food at the table. Je ____ la nourriture à table.",
+        "answer": "sers",
+        "options": ["sers", "ferme", "attends", "s'amuse"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You serve drinks to the guests. Tu ____ des boissons aux invités.",
+        "answer": "sers",
+        "options": ["serves", "sers", "marches", "fermes"],
+        "imageUrl": ""
+    },
+    {
+        "question": "He serves as a mentor for new employees. Il ____ de mentor pour les nouveaux employés.",
+        "answer": "sert",
+        "options": ["sert", "se lève", "ferme", "s'amuse"],
+        "imageUrl": ""
+    },
+    {
+        "question": "We serve breakfast every morning. Nous ____ le petit déjeuner chaque matin.",
+        "answer": "servons",
+        "options": ["attendons", "marchons", "servons", "fermons"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You (formal) serve the dishes. Vous ____ les plats.",
+        "answer": "servez",
+        "options": ["fermez", "servez", "se levez", "attendez"],
+        "imageUrl": ""
+    },
+    {
+        "question": "They serve customers at the counter. Ils ____ les clients au comptoir.",
+        "answer": "servent",
+        "options": ["s'amusent", "ferment", "servent", "marchent"],
+        "imageUrl": ""
+    },
+    {
+        "question": "I close the door before leaving. Je ____ la porte avant de partir.",
+        "answer": "ferme",
+        "options": ["ferme", "sers", "attends", "se lève"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You close the window to keep warm. Tu ____ la fenêtre pour te réchauffer.",
+        "answer": "fermes",
+        "options": ["fermes", "marches", "sers", "s'amuses"],
+        "imageUrl": ""
+    },
+    {
+        "question": "He closes the shop in the evening. Il ____ le magasin le soir.",
+        "answer": "ferme",
+        "options": ["sert", "ferme", "se lève", "s'amuse"],
+        "imageUrl": ""
+    },
+    {
+        "question": "We close the office at 5 PM. Nous ____ le bureau à 17 heures.",
+        "answer": "fermons",
+        "options": ["attendons", "servons", "fermons", "marchons"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You (formal) close the curtains at night. Vous ____ les rideaux le soir.",
+        "answer": "fermez",
+        "options": ["fermez", "marchez", "attendez", "se levez"],
+        "imageUrl": ""
+    },
+    {
+        "question": "They close their laptops during the meeting. Ils ____ leurs ordinateurs portables pendant la réunion.",
+        "answer": "ferment",
+        "options": ["ferment", "servent", "attendent", "se lèvent"],
+        "imageUrl": ""
+    },
+
+
+    {
+        "question": "I show the solution to the problem. J'____ la solution au problème.",
+        "answer": "explique",
+        "options": ["explique", "préférez", "comptez", "choisissez"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You show the reason behind your choice. Tu ____ la raison de ton choix.",
+        "answer": "expliques",
+        "options": ["comptez", "préférez", "expliques", "expliquez"],
+        "imageUrl": ""
+    },
+    {
+        "question": "He shows the steps to complete the task. Il ____ les étapes pour terminer la tâche.",
+        "answer": "explique",
+        "options": ["choisissez", "explique", "préférez", "perdez"],
+        "imageUrl": ""
+    },
+    {
+        "question": "We show the advantages of this method. Nous ____ les avantages de cette méthode.",
+        "answer": "expliquons",
+        "options": ["expliquez", "perdons", "expliquons", "comptez"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You (formal) show the rules to the players. Vous ____ les règles aux joueurs.",
+        "answer": "expliquez",
+        "options": ["comptez", "expliquez", "préférez", "choisissez"],
+        "imageUrl": ""
+    },
+    {
+        "question": "They show the process clearly. Ils ____ le processus clairement.",
+        "answer": "expliquent",
+        "options": ["préférez", "choisissez", "expliquent", "comptez"],
+        "imageUrl": ""
+    },
+    {
+        "question": "I like coffee over tea. Je ____ le café au thé.",
+        "answer": "préfère",
+        "options": ["compte", "préfère", "dors", "perds"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You like watching movies at home. Tu ____ regarder des films à la maison.",
+        "answer": "préfères",
+        "options": ["préfères", "explique", "choisis", "comptes"],
+        "imageUrl": ""
+    },
+    {
+        "question": "He likes summer over winter. Il ____ l'été à l'hiver.",
+        "answer": "préfère",
+        "options": ["préfère", "perds", "explique", "compte"],
+        "imageUrl": ""
+    },
+    {
+        "question": "We like walking instead of driving. Nous ____ marcher au lieu de conduire.",
+        "answer": "préférons",
+        "options": ["préférons", "comptons", "expliquez", "choisissons"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You (formal) like this restaurant. Vous ____ ce restaurant.",
+        "answer": "préférez",
+        "options": ["choisissez", "préférez", "comptez", "perdez"],
+        "imageUrl": ""
+    },
+    {
+        "question": "They like playing outdoors. Ils ____ jouer dehors.",
+        "answer": "préfèrent",
+        "options": ["comptez", "choisissez", "préfèrent", "expliquez"],
+        "imageUrl": ""
+    },
+    {
+        "question": "I sleep for eight hours every night. Je ____ huit heures chaque nuit.",
+        "answer": "dors",
+        "options": ["dors", "préfère", "compte", "choisis"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You sleep early on weekdays. Tu ____ tôt en semaine.",
+        "answer": "dors",
+        "options": ["préfères", "explique", "dors", "perds"],
+        "imageUrl": ""
+    },
+    {
+        "question": "He sleeps soundly despite the noise. Il ____ profondément malgré le bruit.",
+        "answer": "dort",
+        "options": ["compte", "préfère", "dort", "choisis"],
+        "imageUrl": ""
+    },
+    {
+        "question": "We sleep well during vacations. Nous ____ bien pendant les vacances.",
+        "answer": "dormons",
+        "options": ["dormons", "préférons", "perdons", "comptons"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You (formal) sleep in a comfortable bed. Vous ____ dans un lit confortable.",
+        "answer": "dormez",
+        "options": ["choisissez", "perdez", "expliquez", "dormez"],
+        "imageUrl": ""
+    },
+    {
+        "question": "They sleep under the stars during camping. Ils ____ sous les étoiles pendant le camping.",
+        "answer": "dorment",
+        "options": ["expliquez", "dorment", "choisissez", "préférez"],
+        "imageUrl": ""
+    },
+
+
+
+
+    {
+        "question": "I drink water every morning. Je ____ de l'eau tous les matins.",
+        "answer": "bois",
+        "options": ["bois", "aide", "cours", "achète"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You drink coffee with milk. Tu ____ du café avec du lait.",
+        "answer": "bois",
+        "options": ["aides", "bois", "changes", "cours"],
+        "imageUrl": ""
+    },
+    {
+        "question": "He drinks juice at breakfast. Il ____ du jus au petit déjeuner.",
+        "answer": "boit",
+        "options": ["achète", "boit", "explique", "préfère"],
+        "imageUrl": ""
+    },
+    {
+        "question": "We drink tea in the evening. Nous ____ du thé le soir.",
+        "answer": "buvons",
+        "options": ["préfèrons", "changeons", "buvons", "aidons"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You (formal) drink soda on weekends. Vous ____ du soda le week-end.",
+        "answer": "buvez",
+        "options": ["expliquez", "buvez", "achetez", "courez"],
+        "imageUrl": ""
+    },
+    {
+        "question": "They drink sparkling water. Ils ____ de l'eau gazeuse.",
+        "answer": "boivent",
+        "options": ["boivent", "préfèrent", "achètent", "aident"],
+        "imageUrl": ""
+    },
+    {
+        "question": "I help my friend with homework. J'____ mon ami avec ses devoirs.",
+        "answer": "aide",
+        "options": ["cours", "aide", "explique", "préfère"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You help your parents on weekends. Tu ____ tes parents le week-end.",
+        "answer": "aides",
+        "options": ["aides", "changes", "achètes", "bois"],
+        "imageUrl": ""
+    },
+    {
+        "question": "He helps the elderly cross the street. Il ____ les personnes âgées à traverser la rue.",
+        "answer": "aide",
+        "options": ["boit", "aide", "préfère", "explique"],
+        "imageUrl": ""
+    },
+    {
+        "question": "We help clean the park. Nous ____ à nettoyer le parc.",
+        "answer": "aidons",
+        "options": ["buvons", "aidons", "changeons", "expliquez"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You (formal) help organize the event. Vous ____ à organiser l'événement.",
+        "answer": "aidez",
+        "options": ["aidez", "achetez", "préférez", "courez"],
+        "imageUrl": ""
+    },
+    {
+        "question": "They help their classmates with projects. Ils ____ leurs camarades de classe avec les projets.",
+        "answer": "aident",
+        "options": ["boivent", "aident", "expliquez", "achètent"],
+        "imageUrl": ""
+    },
+    {
+        "question": "I run in the park every morning. Je ____ dans le parc tous les matins.",
+        "answer": "cours",
+        "options": ["cours", "aide", "bois", "achète"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You run five kilometers daily. Tu ____ cinq kilomètres tous les jours.",
+        "answer": "cours",
+        "options": ["cours", "changes", "aides", "explique"],
+        "imageUrl": ""
+    },
+    {
+        "question": "He runs fast in the race. Il ____ vite dans la course.",
+        "answer": "court",
+        "options": ["court", "boit", "préfère", "change"],
+        "imageUrl": ""
+    },
+    {
+        "question": "We run marathons together. Nous ____ des marathons ensemble.",
+        "answer": "courons",
+        "options": ["buvons", "courons", "aidons", "expliquez"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You (formal) run to catch the bus. Vous ____ pour attraper le bus.",
+        "answer": "courez",
+        "options": ["courez", "préférez", "changez", "achetez"],
+        "imageUrl": ""
+    },
+    {
+        "question": "They run every weekend. Ils ____ chaque week-end.",
+        "answer": "courent",
+        "options": ["boivent", "courent", "préfèrent", "expliquez"],
+        "imageUrl": ""
+    },
+    {
+        "question": "I buy groceries on Sundays. J'____ les courses le dimanche.",
+        "answer": "achète",
+        "options": ["achète", "cours", "aide", "bois"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You buy books from the bookstore. Tu ____ des livres à la librairie.",
+        "answer": "achètes",
+        "options": ["achètes", "cours", "préfères", "changes"],
+        "imageUrl": ""
+    },
+
+
+
+
+
+    {
+        "question": "I pay the bill at the restaurant. Je ____ l'addition au restaurant.",
+        "answer": "paye",
+        "options": ["paye", "oublie", "travaille", "lire"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You pay for the tickets. Tu ____ les billets.",
+        "answer": "paies",
+        "options": ["lire", "paies", "manges", "oublies"],
+        "imageUrl": ""
+    },
+    {
+        "question": "He pays the rent on time. Il ____ le loyer à temps.",
+        "answer": "paye",
+        "options": ["ouvre", "paye", "arrête", "mange"],
+        "imageUrl": ""
+    },
+    {
+        "question": "We pay in cash. Nous ____ en espèces.",
+        "answer": "payons",
+        "options": ["payons", "oublions", "travaillons", "ouvrons"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You (formal) pay with a credit card. Vous ____ avec une carte de crédit.",
+        "answer": "payez",
+        "options": ["arrêtez", "payez", "mangez", "ouvrez"],
+        "imageUrl": ""
+    },
+    {
+        "question": "They pay their dues regularly. Ils ____ leurs cotisations régulièrement.",
+        "answer": "paient",
+        "options": ["mangent", "ouvrent", "arrêtent", "paient"],
+        "imageUrl": ""
+    },
+    {
+        "question": "I forget my keys at home. J'____ mes clés à la maison.",
+        "answer": "oublie",
+        "options": ["oublie", "travaille", "mange", "lire"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You forget the date of the meeting. Tu ____ la date de la réunion.",
+        "answer": "oublies",
+        "options": ["oublies", "ouvres", "travailles", "manges"],
+        "imageUrl": ""
+    },
+    {
+        "question": "He forgets his wallet. Il ____ son portefeuille.",
+        "answer": "oublie",
+        "options": ["arrête", "oublie", "paie", "mange"],
+        "imageUrl": ""
+    },
+    {
+        "question": "We forget our worries during the vacation. Nous ____ nos soucis pendant les vacances.",
+        "answer": "oublions",
+        "options": ["payons", "oublions", "ouvrons", "travaillons"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You (formal) forget to close the window. Vous ____ de fermer la fenêtre.",
+        "answer": "oubliez",
+        "options": ["oubliez", "mangez", "arrêtez", "ouvrez"],
+        "imageUrl": ""
+    },
+    {
+        "question": "They forget their responsibilities. Ils ____ leurs responsabilités.",
+        "answer": "oublient",
+        "options": ["ouvrent", "mangent", "arrêtent", "oublient"],
+        "imageUrl": ""
+    },
+    {
+        "question": "I work late at night. Je ____ tard le soir.",
+        "answer": "travaille",
+        "options": ["travaille", "oublie", "lire", "paie"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You work on your project diligently. Tu ____ sur ton projet avec diligence.",
+        "answer": "travailles",
+        "options": ["paies", "travailles", "manges", "oublies"],
+        "imageUrl": ""
+    },
+    {
+        "question": "He works as an engineer. Il ____ comme ingénieur.",
+        "answer": "travaille",
+        "options": ["ouvre", "travaille", "arrête", "mange"],
+        "imageUrl": ""
+    },
+    {
+        "question": "We work together on this task. Nous ____ ensemble sur cette tâche.",
+        "answer": "travaillons",
+        "options": ["payons", "travaillons", "ouvrons", "oublions"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You (formal) work in an office. Vous ____ dans un bureau.",
+        "answer": "travaillez",
+        "options": ["arrêtez", "travaillez", "mangez", "ouvrez"],
+        "imageUrl": ""
+    },
+    {
+        "question": "They work hard to achieve their goals. Ils ____ dur pour atteindre leurs objectifs.",
+        "answer": "travaillent",
+        "options": ["ouvrent", "travaillent", "arrêtent", "mangent"],
+        "imageUrl": ""
+    },
+    {
+        "question": "I read a book every week. Je ____ un livre chaque semaine.",
+        "answer": "lis",
+        "options": ["lire", "oublie", "lis", "paie"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You read the newspaper in the morning. Tu ____ le journal le matin.",
+        "answer": "lis",
+        "options": ["paies", "lis", "travailles", "oublies"],
+        "imageUrl": ""
+    },
+    {
+        "question": "He reads novels in his free time. Il ____ des romans pendant son temps libre.",
+        "answer": "lit",
+        "options": ["ouvre", "lit", "arrête", "mange"],
+        "imageUrl": ""
+    },
+    {
+        "question": "We read articles about science. Nous ____ des articles sur la science.",
+        "answer": "lisons",
+        "options": ["payons", "lisons", "ouvrons", "travaillons"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You (formal) read bedtime stories to children. Vous ____ des histoires du soir aux enfants.",
+        "answer": "lisez",
+        "options": ["arrêtez", "lisez", "mangez", "ouvrez"],
+        "imageUrl": ""
+    },
+    {
+        "question": "They read magazines in their leisure time. Ils ____ des magazines pendant leur temps libre.",
+        "answer": "lisent",
+        "options": ["ouvrent", "mangent", "lisent", "oublient"],
+        "imageUrl": ""
+    },
+    {
+        "question": "I open the door for my guest. J'____ la porte pour mon invité.",
+        "answer": "ouvre",
+        "options": ["ouvre", "paie", "travaille", "oublie"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You open the window to let in fresh air. Tu ____ la fenêtre pour laisser entrer de l'air frais.",
+        "answer": "ouvres",
+        "options": ["ouvres", "travailles", "manges", "oublies"],
+        "imageUrl": ""
+    },
+    {
+        "question": "He opens a new account at the bank. Il ____ un nouveau compte à la banque.",
+        "answer": "ouvre",
+        "options": ["arrête", "ouvre", "paie", "lire"],
+        "imageUrl": ""
+    },
+    {
+        "question": "We open our shop early in the morning. Nous ____ notre boutique tôt le matin.",
+        "answer": "ouvrons",
+        "options": ["payons", "ouvrons", "travaillons", "oublions"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You (formal) open the file on your computer. Vous ____ le fichier sur votre ordinateur.",
+        "answer": "ouvrez",
+        "options": ["ouvrez", "mangez", "arrêtez", "lisez"],
+        "imageUrl": ""
+    },
+    {
+        "question": "They open the gates for the visitors. Ils ____ les portes pour les visiteurs.",
+        "answer": "ouvrent",
+        "options": ["mangent", "ouvrent", "arrêtent", "oublient"],
+        "imageUrl": ""
+    },
+    {
+        "question": "I stop working after dinner. J'____ de travailler après le dîner.",
+        "answer": "arrête",
+        "options": ["arrête", "oublie", "mange", "paie"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You stop the car at the traffic light. Tu ____ la voiture au feu rouge.",
+        "answer": "arrêtes",
+        "options": ["paies", "arrêtes", "travailles", "oublies"],
+        "imageUrl": ""
+    },
+    {
+        "question": "He stops running when he gets tired. Il ____ de courir quand il est fatigué.",
+        "answer": "arrête",
+        "options": ["ouvre", "arrête", "paie", "mange"],
+        "imageUrl": ""
+    },
+    {
+        "question": "We stop at the park for a break. Nous ____ au parc pour une pause.",
+        "answer": "arrêtons",
+        "options": ["payons", "arrêtons", "ouvrons", "travaillons"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You (formal) stop making noise in the library. Vous ____ de faire du bruit à la bibliothèque.",
+        "answer": "arrêtez",
+        "options": ["arrêtez", "mangez", "lisez", "ouvrez"],
+        "imageUrl": ""
+    },
+    {
+        "question": "They stop their conversation when the teacher enters. Ils ____ leur conversation quand le professeur entre.",
+        "answer": "arrêtent",
+        "options": ["ouvrent", "arrêtent", "mangent", "oublient"],
+        "imageUrl": ""
+    },
+    {
+        "question": "I eat breakfast every morning. Je ____ le petit déjeuner tous les matins.",
+        "answer": "mange",
+        "options": ["mange", "paie", "travaille", "oublie"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You eat lunch at noon. Tu ____ le déjeuner à midi.",
+        "answer": "manges",
+        "options": ["manges", "oublies", "lire", "travailles"],
+        "imageUrl": ""
+    },
+    {
+        "question": "He eats dinner with his family. Il ____ le dîner avec sa famille.",
+        "answer": "mange",
+        "options": ["ouvre", "mange", "arrête", "paie"],
+        "imageUrl": ""
+    },
+    {
+        "question": "We eat together on Sundays. Nous ____ ensemble le dimanche.",
+        "answer": "mangeons",
+        "options": ["payons", "mangeons", "ouvrons", "travaillons"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You (formal) eat healthy food. Vous ____ des aliments sains.",
+        "answer": "mangez",
+        "options": ["mangez", "paiez", "arrêtez", "lisez"],
+        "imageUrl": ""
+    },
+    {
+        "question": "They eat fruits for dessert. Ils ____ des fruits en dessert.",
+        "answer": "mangent",
+        "options": ["mangent", "ouvrent", "lisez", "oublient"],
+        "imageUrl": ""
+    },
+
+
+
+
+
+    {
+        "question": "I exit the building quickly. Je ____ rapidement du bâtiment.",
+        "answer": "sors",
+        "options": ["sors", "écris", "appelle", "joue"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You exit through the back door. Tu ____ par la porte de derrière.",
+        "answer": "sors",
+        "options": ["écris", "sors", "appelles", "gagnes"],
+        "imageUrl": ""
+    },
+    {
+        "question": "He exits the train. Il ____ du train.",
+        "answer": "sort",
+        "options": ["joue", "sort", "écrit", "gagne"],
+        "imageUrl": ""
+    },
+    {
+        "question": "We exit the cinema together. Nous ____ ensemble du cinéma.",
+        "answer": "sortons",
+        "options": ["gagnons", "jouons", "sortons", "appelons"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You (formal) exit after the announcement. Vous ____ après l'annonce.",
+        "answer": "sortez",
+        "options": ["sortez", "gagnez", "écrivez", "appelez"],
+        "imageUrl": ""
+    },
+    {
+        "question": "They exit the room silently. Ils ____ silencieusement de la pièce.",
+        "answer": "sortent",
+        "options": ["écrivent", "gagnent", "jouent", "sortent"],
+        "imageUrl": ""
+    },
+    {
+        "question": "I write a letter to my friend. J'____ une lettre à mon ami.",
+        "answer": "écris",
+        "options": ["joue", "écris", "appelle", "sors"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You write neatly. Tu ____ proprement.",
+        "answer": "écris",
+        "options": ["écris", "sors", "appelles", "gagnes"],
+        "imageUrl": ""
+    },
+    {
+        "question": "He writes his name on the form. Il ____ son nom sur le formulaire.",
+        "answer": "écrit",
+        "options": ["gagne", "sort", "écrit", "joue"],
+        "imageUrl": ""
+    },
+    {
+        "question": "We write poems together. Nous ____ des poèmes ensemble.",
+        "answer": "écrivons",
+        "options": ["appelons", "écrivons", "jouons", "gagnons"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You (formal) write reports every day. Vous ____ des rapports tous les jours.",
+        "answer": "écrivez",
+        "options": ["gagnez", "écrivez", "appelez", "jouez"],
+        "imageUrl": ""
+    },
+    {
+        "question": "They write stories for children. Ils ____ des histoires pour enfants.",
+        "answer": "écrivent",
+        "options": ["sortent", "jouent", "gagnent", "écrivent"],
+        "imageUrl": ""
+    },
+    {
+        "question": "I call my family every weekend. J'____ ma famille chaque week-end.",
+        "answer": "appelle",
+        "options": ["appelle", "joue", "sors", "écris"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You call your friend in the evening. Tu ____ ton ami le soir.",
+        "answer": "appelles",
+        "options": ["joues", "appelles", "écris", "gagnes"],
+        "imageUrl": ""
+    },
+    {
+        "question": "He calls the doctor for advice. Il ____ le médecin pour un conseil.",
+        "answer": "appelle",
+        "options": ["gagne", "sort", "appelle", "joue"],
+        "imageUrl": ""
+    },
+    {
+        "question": "We call for help in an emergency. Nous ____ à l'aide en cas d'urgence.",
+        "answer": "appelons",
+        "options": ["appelons", "écrivons", "gagnons", "jouons"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You (formal) call the office for information. Vous ____ le bureau pour des informations.",
+        "answer": "appelez",
+        "options": ["jouez", "appelez", "sortez", "gagnez"],
+        "imageUrl": ""
+    },
+    {
+        "question": "They call their parents every day. Ils ____ leurs parents tous les jours.",
+        "answer": "appellent",
+        "options": ["écrivent", "gagnent", "appellent", "jouent"],
+        "imageUrl": ""
+    },
+    {
+        "question": "I play the piano. Je ____ du piano.",
+        "answer": "joue",
+        "options": ["joue", "sors", "écris", "gagne"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You play soccer after school. Tu ____ au football après l'école.",
+        "answer": "joues",
+        "options": ["appelles", "joues", "gagnes", "sors"],
+        "imageUrl": ""
+    },
+    {
+        "question": "He plays video games in his free time. Il ____ aux jeux vidéo pendant son temps libre.",
+        "answer": "joue",
+        "options": ["joue", "appelle", "sort", "gagne"],
+        "imageUrl": ""
+    },
+    {
+        "question": "We play cards on the weekend. Nous ____ aux cartes le week-end.",
+        "answer": "jouons",
+        "options": ["gagnons", "jouons", "appelons", "écrivons"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You (formal) play a vital role in the team. Vous ____ un rôle essentiel dans l'équipe.",
+        "answer": "jouez",
+        "options": ["appelez", "jouez", "sortez", "gagnez"],
+        "imageUrl": ""
+    },
+    {
+        "question": "They play tennis every Saturday. Ils ____ au tennis tous les samedis.",
+        "answer": "jouent",
+        "options": ["jouent", "gagnent", "sortent", "écrivent"],
+        "imageUrl": ""
+    },
+    {
+        "question": "I win the competition. Je ____ la compétition.",
+        "answer": "gagne",
+        "options": ["sors", "écris", "gagne", "joue"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You win the prize for best performance. Tu ____ le prix de la meilleure performance.",
+        "answer": "gagnes",
+        "options": ["gagnes", "sors", "joues", "appelles"],
+        "imageUrl": ""
+    },
+    {
+        "question": "He wins the lottery. Il ____ à la loterie.",
+        "answer": "gagne",
+        "options": ["sort", "gagne", "joue", "écrit"],
+        "imageUrl": ""
+    },
+    {
+        "question": "We win the game by a small margin. Nous ____ le match de justesse.",
+        "answer": "gagnons",
+        "options": ["gagnons", "jouons", "appelons", "écrivons"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You (formal) win the championship. Vous ____ le championnat.",
+        "answer": "gagnez",
+        "options": ["appelez", "jouez", "gagnez", "sortez"],
+        "imageUrl": ""
+    },
+    {
+        "question": "They win the trophy for their hard work. Ils ____ le trophée pour leur dur labeur.",
+        "answer": "gagnent",
+        "options": ["gagnent", "jouent", "écrivent", "sortent"],
+        "imageUrl": ""
+    },
+
+
+    {
+        "question": "I follow the instructions carefully. Je ____ les instructions attentivement.",
+        "answer": "suis",
+        "options": ["porte", "suis", "comprends", "cherche"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You follow the guide. Tu ____ le guide.",
+        "answer": "suis",
+        "options": ["suis", "portes", "apprends", "comprends"],
+        "imageUrl": ""
+    },
+    {
+        "question": "He follows his dreams. Il ____ ses rêves.",
+        "answer": "suit",
+        "options": ["cherche", "suit", "apprend", "porte"],
+        "imageUrl": ""
+    },
+    {
+        "question": "We follow the path through the forest. Nous ____ le chemin à travers la forêt.",
+        "answer": "suivons",
+        "options": ["portons", "apprenons", "suivons", "cherchons"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You (formal) follow the rules. Vous ____ les règles.",
+        "answer": "suivez",
+        "options": ["suivez", "comprenez", "cherchez", "apprenez"],
+        "imageUrl": ""
+    },
+    {
+        "question": "They follow the teacher's instructions. Ils ____ les instructions du professeur.",
+        "answer": "suivent",
+        "options": ["apprennent", "suivent", "portent", "cherchent"],
+        "imageUrl": ""
+    },
+    {
+        "question": "I learn something new every day. J'____ quelque chose de nouveau chaque jour.",
+        "answer": "apprends",
+        "options": ["cherche", "apprends", "comprends", "suis"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You learn quickly. Tu ____ rapidement.",
+        "answer": "apprends",
+        "options": ["portes", "apprends", "suis", "cherches"],
+        "imageUrl": ""
+    },
+    {
+        "question": "He learns to play the piano. Il ____ à jouer du piano.",
+        "answer": "apprend",
+        "options": ["apprend", "porte", "suit", "comprend"],
+        "imageUrl": ""
+    },
+    {
+        "question": "We learn together in class. Nous ____ ensemble en classe.",
+        "answer": "apprenons",
+        "options": ["apprenons", "cherchons", "portons", "suivons"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You (formal) learn new skills. Vous ____ de nouvelles compétences.",
+        "answer": "apprenez",
+        "options": ["comprenez", "apprenez", "cherchez", "suivez"],
+        "imageUrl": ""
+    },
+    {
+        "question": "They learn from their mistakes. Ils ____ de leurs erreurs.",
+        "answer": "apprennent",
+        "options": ["apprennent", "portent", "cherchent", "suivent"],
+        "imageUrl": ""
+    },
+    {
+        "question": "I get the main idea. Je ____ l'idée principale.",
+        "answer": "comprends",
+        "options": ["porte", "comprends", "apprends", "suis"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You get the concept easily. Tu ____ le concept facilement.",
+        "answer": "comprends",
+        "options": ["apprends", "portes", "comprends", "cherches"],
+        "imageUrl": ""
+    },
+    {
+        "question": "He gets the answer correct. Il ____ la réponse correcte.",
+        "answer": "comprend",
+        "options": ["apprend", "comprend", "porte", "suit"],
+        "imageUrl": ""
+    },
+    {
+        "question": "We get the meaning of the text. Nous ____ le sens du texte.",
+        "answer": "comprenons",
+        "options": ["cherchons", "comprenons", "suivons", "portons"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You (formal) get the instructions clearly. Vous ____ clairement les instructions.",
+        "answer": "comprenez",
+        "options": ["comprenez", "apprenez", "suivez", "cherchez"],
+        "imageUrl": ""
+    },
+    {
+        "question": "They get the point of the argument. Ils ____ le point de l'argument.",
+        "answer": "comprennent",
+        "options": ["cherchent", "comprennent", "portent", "suivent"],
+        "imageUrl": ""
+    },
+    {
+        "question": "I wear a coat when it's cold. Je ____ un manteau quand il fait froid.",
+        "answer": "porte",
+        "options": ["porte", "suis", "apprends", "comprends"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You wear glasses to see clearly. Tu ____ des lunettes pour bien voir.",
+        "answer": "portes",
+        "options": ["portes", "suis", "cherches", "apprends"],
+        "imageUrl": ""
+    },
+    {
+        "question": "He wears a tie to work. Il ____ une cravate au travail.",
+        "answer": "porte",
+        "options": ["cherche", "porte", "suit", "apprend"],
+        "imageUrl": ""
+    },
+    {
+        "question": "We wear uniforms at school. Nous ____ des uniformes à l'école.",
+        "answer": "portons",
+        "options": ["cherchons", "portons", "suivons", "comprenons"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You (formal) wear formal attire. Vous ____ une tenue formelle.",
+        "answer": "portez",
+        "options": ["portez", "suivez", "apprenez", "comprenez"],
+        "imageUrl": ""
+    },
+    {
+        "question": "They wear hats in the sun. Ils ____ des chapeaux au soleil.",
+        "answer": "portent",
+        "options": ["suivent", "cherchent", "portent", "apprennent"],
+        "imageUrl": ""
+    },
+    {
+        "question": "I find my lost keys. Je ____ mes clés perdues.",
+        "answer": "cherche",
+        "options": ["suis", "cherche", "porte", "apprends"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You find the book on the shelf. Tu ____ le livre sur l'étagère.",
+        "answer": "cherches",
+        "options": ["portes", "cherches", "suis", "apprends"],
+        "imageUrl": ""
+    },
+    {
+        "question": "He finds the solution to the problem. Il ____ la solution au problème.",
+        "answer": "cherche",
+        "options": ["cherche", "porte", "apprend", "suit"],
+        "imageUrl": ""
+    },
+    {
+        "question": "We find a new way to solve it. Nous ____ une nouvelle façon de le résoudre.",
+        "answer": "cherchons",
+        "options": ["apprenons", "cherchons", "portons", "suivons"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You (formal) find it interesting. Vous ____ cela intéressant.",
+        "answer": "cherchez",
+        "options": ["cherchez", "apprenez", "suivez", "comprenez"],
+        "imageUrl": ""
+    },
+    {
+        "question": "They find the missing piece. Ils ____ la pièce manquante.",
+        "answer": "cherchent",
+        "options": ["portent", "cherchent", "apprennent", "suivent"],
+        "imageUrl": ""
+    },
+
+    {
+        "question": "I hold the bag tightly. Je ____ le sac fermement.",
+        "answer": "tiens",
+        "options": ["viens", "tiens", "montre", "continue"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You hold the door open. Tu ____ la porte ouverte.",
+        "answer": "tiens",
+        "options": ["tiens", "montres", "vis", "commences"],
+        "imageUrl": ""
+    },
+    {
+        "question": "He holds the microphone. Il ____ le microphone.",
+        "answer": "tient",
+        "options": ["montre", "tient", "continue", "commence"],
+        "imageUrl": ""
+    },
+    {
+        "question": "We hold hands while walking. Nous ____ la main en marchant.",
+        "answer": "tenons",
+        "options": ["commençons", "montrons", "tenons", "vivons"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You (formal) hold onto the rail. Vous ____ la rampe.",
+        "answer": "tenez",
+        "options": ["tenez", "montrez", "commencez", "continuez"],
+        "imageUrl": ""
+    },
+    {
+        "question": "They hold their position firmly. Ils ____ fermement leur position.",
+        "answer": "tiennent",
+        "options": ["vivent", "tiennent", "continuent", "commencent"],
+        "imageUrl": ""
+    },
+    {
+        "question": "I live in a small town. Je ____ dans une petite ville.",
+        "answer": "vis",
+        "options": ["vis", "tiens", "continue", "montre"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You live near the beach. Tu ____ près de la plage.",
+        "answer": "vis",
+        "options": ["montres", "continues", "vis", "commences"],
+        "imageUrl": ""
+    },
+    {
+        "question": "He lives with his family. Il ____ avec sa famille.",
+        "answer": "vit",
+        "options": ["tient", "montre", "vit", "commence"],
+        "imageUrl": ""
+    },
+    {
+        "question": "We live happily together. Nous ____ heureux ensemble.",
+        "answer": "vivons",
+        "options": ["vivons", "tenons", "montrons", "commençons"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You (formal) live in the city. Vous ____ en ville.",
+        "answer": "vivez",
+        "options": ["commencez", "vivez", "tenez", "montrez"],
+        "imageUrl": ""
+    },
+    {
+        "question": "They live in the countryside. Ils ____ à la campagne.",
+        "answer": "vivent",
+        "options": ["tiennent", "montrent", "commencent", "vivent"],
+        "imageUrl": ""
+    },
+    {
+        "question": "I show the picture to my friend. Je ____ la photo à mon ami.",
+        "answer": "montre",
+        "options": ["continue", "montre", "vis", "commence"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You show the way to the tourists. Tu ____ le chemin aux touristes.",
+        "answer": "montres",
+        "options": ["montres", "commences", "tiens", "vis"],
+        "imageUrl": ""
+    },
+    {
+        "question": "He shows the documents to the manager. Il ____ les documents au responsable.",
+        "answer": "montre",
+        "options": ["tient", "montre", "continue", "commence"],
+        "imageUrl": ""
+    },
+    {
+        "question": "We show our support to the team. Nous ____ notre soutien à l'équipe.",
+        "answer": "montrons",
+        "options": ["vivons", "montrons", "tenons", "commençons"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You (formal) show the results to the group. Vous ____ les résultats au groupe.",
+        "answer": "montrez",
+        "options": ["montez", "vivez", "montrez", "tenez"],
+        "imageUrl": ""
+    },
+    {
+        "question": "They show great courage. Ils ____ un grand courage.",
+        "answer": "montrent",
+        "options": ["montrent", "commencent", "tiennent", "vivent"],
+        "imageUrl": ""
+    },
+    {
+        "question": "I keep working late. Je ____ à travailler tard.",
+        "answer": "continue",
+        "options": ["montre", "continue", "tiens", "vis"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You keep improving every day. Tu ____ de t'améliorer chaque jour.",
+        "answer": "continues",
+        "options": ["tiens", "vis", "montres", "continues"],
+        "imageUrl": ""
+    },
+    {
+        "question": "He keeps running despite the rain. Il ____ à courir malgré la pluie.",
+        "answer": "continue",
+        "options": ["tient", "montre", "continue", "commence"],
+        "imageUrl": ""
+    },
+    {
+        "question": "We keep believing in our dream. Nous ____ à croire en notre rêve.",
+        "answer": "continuons",
+        "options": ["vivons", "tenons", "continuons", "commençons"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You (formal) keep learning new skills. Vous ____ à apprendre de nouvelles compétences.",
+        "answer": "continuez",
+        "options": ["commencez", "vivez", "tenez", "continuez"],
+        "imageUrl": ""
+    },
+    {
+        "question": "They keep growing stronger. Ils ____ à devenir plus forts.",
+        "answer": "continuent",
+        "options": ["tiennent", "montrent", "continuent", "vivent"],
+        "imageUrl": ""
+    },
+    {
+        "question": "I start a new book. Je ____ un nouveau livre.",
+        "answer": "commence",
+        "options": ["continue", "montre", "commence", "vis"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You start to understand the lesson. Tu ____ à comprendre la leçon.",
+        "answer": "commences",
+        "options": ["montres", "commences", "tiens", "vis"],
+        "imageUrl": ""
+    },
+    {
+        "question": "He starts the car. Il ____ la voiture.",
+        "answer": "commence",
+        "options": ["tient", "commence", "continue", "montre"],
+        "imageUrl": ""
+    },
+    {
+        "question": "We start preparing for the event. Nous ____ à préparer l'événement.",
+        "answer": "commençons",
+        "options": ["vivons", "commençons", "tenons", "montrons"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You (formal) start your presentation. Vous ____ votre présentation.",
+        "answer": "commencez",
+        "options": ["commencez", "vivez", "tenez", "montrez"],
+        "imageUrl": ""
+    },
+    {
+        "question": "They start their journey early. Ils ____ leur voyage tôt.",
+        "answer": "commencent",
+        "options": ["tiennent", "commencent", "vivent", "montrent"],
+        "imageUrl": ""
+    },
+
+
+
+
+    {
+        "question": "I love reading books. J'____ lire des livres.",
+        "answer": "aime",
+        "options": [
+            "crois",
+            "aime",
+            "pense",
+            "demande"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "You love watching movies. Tu ____ regarder des films.",
+        "answer": "aimes",
+        "options": [
+            "crois",
+            "aimes",
+            "demandes",
+            "penses"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "He loves listening to music. Il ____ \u00e9couter de la musique.",
+        "answer": "aime",
+        "options": [
+            "aime",
+            "pense",
+            "croit",
+            "demande"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "We love traveling together. Nous ____ voyager ensemble.",
+        "answer": "aimons",
+        "options": [
+            "demandons",
+            "croyons",
+            "pensons",
+            "aimons"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "You (formal) love exploring new places. Vous ____ explorer de nouveaux endroits.",
+        "answer": "aimez",
+        "options": [
+            "pensez",
+            "demandez",
+            "croyez",
+            "aimez"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "They love playing soccer. Ils ____ jouer au football.",
+        "answer": "aiment",
+        "options": [
+            "croient",
+            "pensent",
+            "aiment",
+            "demandent"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "I think it's a good idea. Je ____ que c'est une bonne id\u00e9e.",
+        "answer": "crois",
+        "options": [
+            "aime",
+            "demande",
+            "pense",
+            "crois"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "You think the answer is correct. Tu ____ que la r\u00e9ponse est correcte.",
+        "answer": "crois",
+        "options": [
+            "penses",
+            "crois",
+            "demandes",
+            "aimes"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "He thinks he is right. Il ____ qu'il a raison.",
+        "answer": "croit",
+        "options": [
+            "aime",
+            "croit",
+            "pense",
+            "demande"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "We think about the future. Nous ____ \u00e0 l'avenir.",
+        "answer": "croyons",
+        "options": [
+            "aimons",
+            "croyons",
+            "demandons",
+            "pensons"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "You (formal) think it will rain. Vous ____ qu'il va pleuvoir.",
+        "answer": "croyez",
+        "options": [
+            "pensez",
+            "demandez",
+            "aimez",
+            "croyez"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "They think about their plans. Ils ____ \u00e0 leurs projets.",
+        "answer": "croient",
+        "options": [
+            "demandent",
+            "pensent",
+            "croient",
+            "aiment"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "I ask for help politely. Je ____ de l'aide poliment.",
+        "answer": "demande",
+        "options": [
+            "crois",
+            "demande",
+            "pense",
+            "aime"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "You ask your teacher a question. Tu ____ une question \u00e0 ton professeur.",
+        "answer": "demandes",
+        "options": [
+            "aimes",
+            "penses",
+            "demandes",
+            "crois"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "He asks for directions. Il ____ son chemin.",
+        "answer": "demande",
+        "options": [
+            "croit",
+            "pense",
+            "demande",
+            "aime"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "We ask for more information. Nous ____ plus d'informations.",
+        "answer": "demandons",
+        "options": [
+            "aimons",
+            "demandons",
+            "pensons",
+            "croyons"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "You (formal) ask for advice. Vous ____ des conseils.",
+        "answer": "demandez",
+        "options": [
+            "aimez",
+            "demandez",
+            "croyez",
+            "pensez"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "They ask about the schedule. Ils ____ \u00e0 propos du calendrier.",
+        "answer": "demandent",
+        "options": [
+            "croient",
+            "pensent",
+            "demandent",
+            "aiment"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "I stay at home during the weekend. Je ____ \u00e0 la maison le week-end.",
+        "answer": "reste",
+        "options": [
+            "reste",
+            "entends",
+            "pense",
+            "r\u00e9ponds"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "You stay in bed when you're sick. Tu ____ au lit quand tu es malade.",
+        "answer": "restes",
+        "options": [
+            "entends",
+            "restes",
+            "r\u00e9ponds",
+            "penses"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "He stays with his friends. Il ____ avec ses amis.",
+        "answer": "reste",
+        "options": [
+            "reste",
+            "entend",
+            "pense",
+            "r\u00e9pond"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "We stay at the hotel. Nous ____ \u00e0 l'h\u00f4tel.",
+        "answer": "restons",
+        "options": [
+            "r\u00e9pondons",
+            "restons",
+            "entendons",
+            "pensons"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "You (formal) stay late at work. Vous ____ tard au travail.",
+        "answer": "restez",
+        "options": [
+            "restez",
+            "r\u00e9pondez",
+            "pensez",
+            "entendez"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "They stay quiet during the movie. Ils ____ silencieux pendant le film.",
+        "answer": "restent",
+        "options": [
+            "pensent",
+            "r\u00e9pondent",
+            "restent",
+            "entendent"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "I answer the question correctly. Je ____ correctement \u00e0 la question.",
+        "answer": "r\u00e9ponds",
+        "options": [
+            "r\u00e9ponds",
+            "entends",
+            "reste",
+            "pense"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "You answer the phone quickly. Tu ____ rapidement au t\u00e9l\u00e9phone.",
+        "answer": "r\u00e9ponds",
+        "options": [
+            "restes",
+            "entends",
+            "r\u00e9ponds",
+            "penses"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "He answers with confidence. Il ____ avec confiance.",
+        "answer": "r\u00e9pond",
+        "options": [
+            "entend",
+            "r\u00e9pond",
+            "reste",
+            "pense"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "We answer all the emails. Nous ____ \u00e0 tous les emails.",
+        "answer": "r\u00e9pondons",
+        "options": [
+            "restons",
+            "entendons",
+            "r\u00e9pondons",
+            "pensons"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "You (formal) answer politely. Vous ____ poliment.",
+        "answer": "r\u00e9pondez",
+        "options": [
+            "entendez",
+            "restez",
+            "pensez",
+            "r\u00e9pondez"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "They answer in unison. Ils ____ en ch\u0153ur.",
+        "answer": "r\u00e9pondent",
+        "options": [
+            "r\u00e9pondent",
+            "pensent",
+            "entendent",
+            "restent"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "I hear a strange noise. J'____ un bruit \u00e9trange.",
+        "answer": "entends",
+        "options": [
+            "pense",
+            "reste",
+            "r\u00e9ponds",
+            "entends"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "You hear the music clearly. Tu ____ la musique clairement.",
+        "answer": "entends",
+        "options": [
+            "restes",
+            "penses",
+            "entends",
+            "r\u00e9ponds"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "He hears the birds singing. Il ____ les oiseaux chanter.",
+        "answer": "entend",
+        "options": [
+            "pense",
+            "entend",
+            "reste",
+            "r\u00e9pond"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "We hear the waves crashing. Nous ____ les vagues se briser.",
+        "answer": "entendons",
+        "options": [
+            "restons",
+            "entendons",
+            "r\u00e9pondons",
+            "pensons"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "You (formal) hear the announcement. Vous ____ l'annonce.",
+        "answer": "entendez",
+        "options": [
+            "restez",
+            "r\u00e9pondez",
+            "entendez",
+            "pensez"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "They hear the applause. Ils ____ les applaudissements.",
+        "answer": "entendent",
+        "options": [
+            "pensent",
+            "entendent",
+            "r\u00e9pondent",
+            "restent"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "I think about my plans. Je ____ \u00e0 mes projets.",
+        "answer": "pense",
+        "options": [
+            "entends",
+            "pense",
+            "r\u00e9ponds",
+            "reste"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "You think the idea is interesting. Tu ____ que l'id\u00e9e est int\u00e9ressante.",
+        "answer": "penses",
+        "options": [
+            "entends",
+            "restes",
+            "r\u00e9ponds",
+            "penses"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "He thinks about his future. Il ____ \u00e0 son avenir.",
+        "answer": "pense",
+        "options": [
+            "r\u00e9pond",
+            "entend",
+            "reste",
+            "pense"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "We think about the possibilities. Nous ____ aux possibilit\u00e9s.",
+        "answer": "pensons",
+        "options": [
+            "r\u00e9pondons",
+            "restons",
+            "pensons",
+            "entendons"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "You (formal) think carefully before speaking. Vous ____ avant de parler.",
+        "answer": "pensez",
+        "options": [
+            "r\u00e9pondez",
+            "restez",
+            "entendez",
+            "pensez"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "They think about their responsibilities. Ils ____ \u00e0 leurs responsabilit\u00e9s.",
+        "answer": "pensent",
+        "options": [
+            "entendent",
+            "pensent",
+            "restent",
+            "r\u00e9pondent"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "I come to the party on time. J'____ \u00e0 la f\u00eate \u00e0 l'heure.",
+        "answer": "arrive",
+        "options": [
+            "arrive",
+            "sens",
+            "connais",
+            "deviens"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "You come home late. Tu ____ tard \u00e0 la maison.",
+        "answer": "arrives",
+        "options": [
+            "arrives",
+            "sens",
+            "deviens",
+            "connais"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "He comes with his friends. Il ____ avec ses amis.",
+        "answer": "arrive",
+        "options": [
+            "conna\u00eet",
+            "sent",
+            "arrive",
+            "devient"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "We come to school together. Nous ____ \u00e0 l'\u00e9cole ensemble.",
+        "answer": "arrivons",
+        "options": [
+            "devenons",
+            "arrivons",
+            "connaissons",
+            "sentons"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "You (formal) come early to the meeting. Vous ____ t\u00f4t \u00e0 la r\u00e9union.",
+        "answer": "arrivez",
+        "options": [
+            "sentez",
+            "connaissez",
+            "arrivez",
+            "devenez"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "They come by train. Ils ____ en train.",
+        "answer": "arrivent",
+        "options": [
+            "deviennent",
+            "connaissent",
+            "arrivent",
+            "sentent"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "I know this city well. Je ____ bien cette ville.",
+        "answer": "connais",
+        "options": [
+            "connais",
+            "deviens",
+            "arrive",
+            "sens"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "You know the teacher. Tu ____ le professeur.",
+        "answer": "connais",
+        "options": [
+            "sens",
+            "arrives",
+            "deviens",
+            "connais"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "He knows her family. Il ____ sa famille.",
+        "answer": "conna\u00eet",
+        "options": [
+            "sent",
+            "conna\u00eet",
+            "arrive",
+            "devient"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "We know each other well. Nous ____ bien.",
+        "answer": "connaissons",
+        "options": [
+            "connaissons",
+            "sentons",
+            "arrivons",
+            "devenons"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "You (formal) know the area. Vous ____ la r\u00e9gion.",
+        "answer": "connaissez",
+        "options": [
+            "sentez",
+            "connaissez",
+            "devenez",
+            "arrivez"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "They know the truth. Ils ____ la v\u00e9rit\u00e9.",
+        "answer": "connaissent",
+        "options": [
+            "arrivent",
+            "sentent",
+            "connaissent",
+            "deviennent"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "I become tired in the evening. Je ____ fatigu\u00e9 le soir.",
+        "answer": "deviens",
+        "options": [
+            "deviens",
+            "arrive",
+            "connais",
+            "sens"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "You become an expert in your field. Tu ____ un expert dans ton domaine.",
+        "answer": "deviens",
+        "options": [
+            "sens",
+            "arrives",
+            "connais",
+            "deviens"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "He becomes a good leader. Il ____ un bon leader.",
+        "answer": "devient",
+        "options": [
+            "conna\u00eet",
+            "sent",
+            "arrive",
+            "devient"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "We become more confident. Nous ____ plus confiants.",
+        "answer": "devenons",
+        "options": [
+            "arrivons",
+            "devenons",
+            "connaissons",
+            "sentons"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "You (formal) become successful. Vous ____ prosp\u00e8res.",
+        "answer": "devenez",
+        "options": [
+            "connaissez",
+            "devenez",
+            "arrivez",
+            "sentez"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "They become happier. Ils ____ plus heureux.",
+        "answer": "deviennent",
+        "options": [
+            "arrivent",
+            "connaissent",
+            "deviennent",
+            "sentent"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "I feel the cold wind. Je ____ le vent froid.",
+        "answer": "sens",
+        "options": [
+            "connais",
+            "sens",
+            "deviens",
+            "arrive"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "You feel the heat of the sun. Tu ____ la chaleur du soleil.",
+        "answer": "sens",
+        "options": [
+            "arrives",
+            "deviens",
+            "sens",
+            "connais"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "He feels happy today. Il ____ heureux aujourd'hui.",
+        "answer": "sent",
+        "options": [
+            "sent",
+            "arrive",
+            "conna\u00eet",
+            "devient"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "We feel the vibration of the music. Nous ____ la vibration de la musique.",
+        "answer": "sentons",
+        "options": [
+            "devenons",
+            "sentons",
+            "arrivons",
+            "connaissons"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "You (formal) feel a sense of pride. Vous ____ une fiert\u00e9.",
+        "answer": "sentez",
+        "options": [
+            "devenez",
+            "arrivez",
+            "connaissez",
+            "sentez"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "They feel the excitement in the air. Ils ____ l'excitation dans l'air.",
+        "answer": "sentent",
+        "options": [
+            "arrivent",
+            "connaissent",
+            "sentent",
+            "deviennent"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "I seem happy today. Je ____ heureux aujourd'hui.",
+        "answer": "semble",
+        "options": [
+            "laisse",
+            "vois",
+            "semble",
+            "rends"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "You seem tired this morning. Tu ____ fatigu\u00e9 ce matin.",
+        "answer": "semblent",
+        "options": [
+            "vois",
+            "rends",
+            "semblent",
+            "laisses"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "It seems like a good day. Il ____ un bon jour.",
+        "answer": "semble",
+        "options": [
+            "semble",
+            "laisse",
+            "voit",
+            "rend"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "We seem busy with work. Nous ____ occup\u00e9s avec le travail.",
+        "answer": "semblons",
+        "options": [
+            "laissons",
+            "semblons",
+            "rendons",
+            "voyons"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "You (formal) seem very kind. Vous ____ tr\u00e8s gentils.",
+        "answer": "semblez",
+        "options": [
+            "rendez",
+            "semblez",
+            "laissez",
+            "voyez"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "They seem very excited. Ils ____ tr\u00e8s excit\u00e9s.",
+        "answer": "semblent",
+        "options": [
+            "voient",
+            "semblent",
+            "laissent",
+            "rendent"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "I leave the door open. Je ____ la porte ouverte.",
+        "answer": "laisse",
+        "options": [
+            "semble",
+            "laisse",
+            "rends",
+            "vois"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "You leave your keys on the table. Tu ____ tes cl\u00e9s sur la table.",
+        "answer": "laisses",
+        "options": [
+            "vois",
+            "sembler",
+            "laisses",
+            "rends"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "He leaves his bag at school. Il ____ son sac \u00e0 l'\u00e9cole.",
+        "answer": "laisse",
+        "options": [
+            "semble",
+            "laisse",
+            "rend",
+            "voit"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "We leave the lights on. Nous ____ les lumi\u00e8res allum\u00e9es.",
+        "answer": "laissons",
+        "options": [
+            "laissons",
+            "voyons",
+            "semblons",
+            "rendons"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "You (formal) leave the car unlocked. Vous ____ la voiture d\u00e9verrouill\u00e9e.",
+        "answer": "laissez",
+        "options": [
+            "rendez",
+            "laissez",
+            "semblez",
+            "voyez"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "They leave their books at home. Ils ____ leurs livres \u00e0 la maison.",
+        "answer": "laissent",
+        "options": [
+            "rendent",
+            "laissent",
+            "semblent",
+            "voient"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "I return the book to the library. Je ____ le livre \u00e0 la biblioth\u00e8que.",
+        "answer": "rends",
+        "options": [
+            "vois",
+            "rends",
+            "semble",
+            "laisse"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "You return the favor to your friend. Tu ____ la faveur \u00e0 ton ami.",
+        "answer": "rends",
+        "options": [
+            "vois",
+            "laisses",
+            "rends",
+            "semble"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "He returns the keys to the owner. Il ____ les cl\u00e9s au propri\u00e9taire.",
+        "answer": "rend",
+        "options": [
+            "rend",
+            "voit",
+            "semble",
+            "laisse"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "We return to the office after lunch. Nous ____ au bureau apr\u00e8s le d\u00e9jeuner.",
+        "answer": "rendons",
+        "options": [
+            "voyons",
+            "rendons",
+            "semblons",
+            "laissons"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "You (formal) return the car to the rental company. Vous ____ la voiture \u00e0 l'agence de location.",
+        "answer": "rendez",
+        "options": [
+            "voyez",
+            "laissez",
+            "rendez",
+            "semblez"
+        ],
+        "imageUrl": ""
+    },
+    {
+        "question": "They return the borrowed tools. Ils ____ les outils emprunt\u00e9s.",
+        "answer": "rendent",
+        "options": [
+            "laissent",
+            "voient",
+            "rendent",
+            "semblent"
+        ],
+        "imageUrl": ""
+    }, 
+
+
+
+
+//these questions are good
+{ question: "I have - j'____", answer: "ai", options: ["ai", "as", "a", "ont"], imageUrl: "" },
+            { question: "You have - tu ____", answer: "as", options: ["ai", "as", "a", "avons"], imageUrl: "" },
+            { question: "He/she/it has - il/elle ____", answer: "a", options: ["ai", "as", "a", "ont"], imageUrl: "" },
+            { question: "We have - nous ____", answer: "avons", options: ["avez", "avons", "as", "ai"], imageUrl: "" },
+            { question: "They have - ils/elles ____", answer: "ont", options: ["a", "ont", "as", "avez"], imageUrl: "" },
+            { question: "I had - j'____", answer: "ai eu", options: ["ai eu", "as eu", "a eu", "ont eu"], imageUrl: "" },
+            { question: "You had - tu ____", answer: "as eu", options: ["ai eu", "as eu", "a eu", "ont eu"], imageUrl: "" },
+            { question: "He/she/it had - il/elle ____", answer: "a eu", options: ["ai eu", "as eu", "a eu", "ont eu"], imageUrl: "" },
+            { question: "We had - nous ____", answer: "avons eu", options: ["avons eu", "avez eu", "as eu", "ont eu"], imageUrl: "" },
+            { question: "They had - ils/elles ____", answer: "ont eu", options: ["a eu", "ont eu", "avons eu", "avez eu"], imageUrl: "" },
+            { question: "I will have - j'____", answer: "aurai", options: ["aurai", "auras", "aura", "aurons"], imageUrl: "" },
+            { question: "You will have - tu ____", answer: "auras", options: ["aurai", "auras", "aura", "aurons"], imageUrl: "" },
+            { question: "He/she/it will have - il/elle ____", answer: "aura", options: ["aurai", "auras", "aura", "auront"], imageUrl: "" },
+            { question: "We will have - nous ____", answer: "aurons", options: ["aurai", "aurons", "aura", "auront"], imageUrl: "" },
+            { question: "They will have - ils/elles ____", answer: "auront", options: ["aurai", "auras", "auront", "aura"], imageUrl: "" },
+            { question: "I go - je ____", answer: "vais", options: ["vais", "vas", "va", "allons"], imageUrl: "" },
+            { question: "You go - tu ____", answer: "vas", options: ["vais", "vas", "va", "allez"], imageUrl: "" },
+            { question: "He/she/it goes - il/elle ____", answer: "va", options: ["vais", "vas", "va", "vont"], imageUrl: "" },
+            { question: "We go - nous ____", answer: "allons", options: ["allons", "allez", "vas", "vont"], imageUrl: "" },
+            { question: "They go - ils/elles ____", answer: "vont", options: ["va", "vas", "vont", "allez"], imageUrl: "" },
+            { question: "I must - je ____", answer: "dois", options: ["dois", "doit", "devons", "doivent"], imageUrl: "" },
+            { question: "You must - tu ____", answer: "dois", options: ["dois", "doit", "devons", "devez"], imageUrl: "" },
+            { question: "He/she/it must - il/elle ____", answer: "doit", options: ["dois", "doit", "devons", "doivent"], imageUrl: "" },
+            { question: "We must - nous ____", answer: "devons", options: ["dois", "doit", "devons", "devez"], imageUrl: "" },
+            { question: "They must - ils/elles ____", answer: "doivent", options: ["dois", "doit", "devons", "doivent"], imageUrl: "" },
 
-//November 27 2024 Version
-         
 
-
- { question: 'I have - j\'____ <br> I have two loves', answer: 'ai' },
-  { question: 'you have <br> two letters starts with a <br> tu____', answer: 'as' },
-  { question: 'he, she, it has <br> (alphabet) <br> il elle ____', answer: 'a' },
-  { question: 'we have <br> un avion <br>  nous ____', answer: 'avons' },
-  { question: 'you have (formal) <br> du lait <br> vous ____', answer: 'avez' },{ question: 'they have <br> not off but...<br>  ils elles ____', answer: 'ont' },
-  { question: 'I have - j\'____ I have two loves', answer: 'ai' },
-
-//etre to be
-{ question: 'I am - je ____ desole', answer: 'suis' },
-{ question: 'you are <br>   <br> tu e____', answer: 'es' },
-{ question: 'he, she, it is <br> (west) <br> il elle ____', answer: 'est' },
-{ question: 'we are <br> sommeliers - Nous sommes un grand pays <br> nous ____', answer: 'sommes' },
-{ question: 'you are  <br>lettuce<br>  vous ____ <br> (the e has a hat)', answer: 'etes' },
-{ question: 'they are (sonny) ils elles ____', answer: 'sont' },
-
-
-
-//aller to go
-{ question: 'I go - je v____', answer: 'vais' },
-{ question: 'you go  <br> tu v____', answer: 'vas' },
-{ question: 'he, she, it goes  il elle v____', answer: 'va' },
-{ question: 'we go  nous a____ to Allons', answer: 'allons' },
-{ question: 'you go  vous a____', answer: 'allez' },
-{ question: 'they go  ils elles v____', answer: 'vont' },
-
-
-//faire to do or make
-{ question: 'I do/make - je f____', answer: 'fais' },
-{ question: 'you do/make  <br> tu f____', answer: 'fais' },
-{ question: 'he, she, it does/makes  il elle f____t', answer: 'fait' },
-{ question: 'we do/make - Nous faisons de grands enfants -   nous ____', answer: 'faisons' },
-{ question: 'you do/make  vous ____', answer: 'faites' },
-{ question: 'they do/make  ils ils font des gâteaux they make cakes -  elles ____', answer: 'font' },
-
-
-
-
-
-
-
-//voir to see
-  { question: 'I see - je v____ je vois mon ami', answer: 'vois' },
-{ question: 'you see  <br> tu v____', answer: 'vois' },
-{ question: 'he, she, it sees  il elle v____t', answer: 'voit' },
-{ question: 'we see  nous ____', answer: 'voyons' },
-{ question: 'you see  vous ____', answer: 'voyez' },
-{ question: 'they see  ils elles ____', answer: 'voient' },
-
-
-
-
-  { question: "vouloir - to _____", answer: "want" },
-
-
-//vouloir to want
-  { question: 'I want - je v____', answer: 'veux' },
-{ question: 'you want  <br> tu v____', answer: 'veux' },
-{ question: 'he, she, it wants  il elle v____t', answer: 'veut' },
-{ question: 'we want  nous ____', answer: 'voulons' },
-{ question: 'you want  vous ____', answer: 'voulez' },
-{ question: 'they want  ils elles ____', answer: 'veulent' },
-
-
-
-
-{ question: "venir - to _____", answer: "come" },
-
-//venir to come
-{ question: 'I come - je v____', answer: 'viens' },
-{ question: 'you come  <br> tu v____', answer: 'viens' },
-{ question: 'he, she, it comes  il elle v____t', answer: 'vient' },
-{ question: 'we come  nous ____', answer: 'venons' },
-{ question: 'you come  vous ____', answer: 'venez' },
-{ question: 'they come  ils elles ____', answer: 'viennent' },
-
-
-
-{ question: "devoir - to _____", answer: "must" },
-//devoir to have, must
-{ question: 'I have to - je d____', answer: 'dois' },
-{ question: 'you have to  <br> tu d____', answer: 'dois' },
-{ question: 'he, she, it has to  il elle d____t', answer: 'doit' },
-{ question: 'we have to  nous ____', answer: 'devons' },
-{ question: 'you have to  vous ____', answer: 'devez' },
-{ question: 'they have to  ils elles ____', answer: 'doivent' },
-
-
-
-// prendre to take
-{ question: 'I take - je p____ <br> Example: je prends le train.', answer: 'prends' },
-{ question: 'you take  <br> tu p____ <br> Example: tu prends une pomme.', answer: 'prends' },
-{ question: 'he, she, it takes  il elle p____ <br> Example: il prend un café.', answer: 'prend' },
-{ question: 'we take  nous ____ <br> Example: nous prenons un taxi.', answer: 'prenons' },
-{ question: 'you take  vous ____ <br> Example: vous prenez un stylo.', answer: 'prenez' },
-{ question: 'they take  ils elles ____ <br> Example: ils prennent des photos.', answer: 'prennent' },
-
-
-// trouver to find
-
-{ question: "trouver - to _____", answer: "find" },
-
-{ question: 'I find - je t____ <br> Example: je trouve mes clés.', answer: 'trouve' },
-{ question: 'you find  <br> tu t____ <br> Example: tu trouves une solution.', answer: 'trouves' },
-{ question: 'he, she, it finds  il elle t____ <br> Example: il trouve un travail.', answer: 'trouve' },
-{ question: 'we find  nous ____ <br> Example: nous trouvons une maison.', answer: 'trouvons' },
-{ question: 'you find  vous ____ <br> Example: vous trouvez votre chemin.', answer: 'trouvez' },
-{ question: 'they find  ils elles ____ <br> Example: ils trouvent des idées.', answer: 'trouvent' },
-
-
-
-
-
-
-{ question: "donner - to _____", answer: "give" },
-// donner to give
-{ question: 'I give - je d____ <br> Example: je ______ un cadeau.', answer: 'donne' },
-{ question: 'you give  <br> tu d____ <br> Example: tu _______ des conseils.', answer: 'donnes' },
-{ question: 'he, she, it gives  il elle d____ <br> Example: il _______ un livre.', answer: 'donne' },
-{ question: 'we give  nous ____ <br> Example: nous _______ de l\'argent.', answer: 'donnons' },
-{ question: 'you give  vous ____ <br> Example: vous ________ votre opinion.', answer: 'donnez' },
-{ question: 'they give  ils elles ____ <br> Example: ils _______ des fleurs.', answer: 'donnent' },
-
-
-
-
-
-
-
-{ question: "parler - to _____", answer: "speak" },
-
-// parler - to speak
-{ question: 'I speak - je p____ <br> Example: je ______ français.', answer: 'parle' },
-{ question: 'you speak  <br> tu p____ <br> Example: tu _______ anglais.', answer: 'parles' },
-{ question: 'he, she, it speaks  il elle p____ <br> Example: il _______ espagnol.', answer: 'parle' },
-{ question: 'we speak  nous ____ <br> Example: nous _______ avec nos amis.', answer: 'parlons' },
-{ question: 'you speak  vous ____ <br> Example: vous ________ en public.', answer: 'parlez' },
-{ question: 'they speak  ils elles ____ <br> Example: ils _______ doucement.', answer: 'parlent' },
-
-
-
-
-
-
-{ question: "regarder - to _____", answer: "watch" },
-// regarder - to watch
-{ question: 'I watch - je r____ <br> Example: je ______ la télévision.', answer: 'regarde' },
-{ question: 'you watch  <br> tu r____ <br> Example: tu _______ un film.', answer: 'regardes' },
-{ question: 'he, she, it watches  il elle r____ <br> Example: il _______ les étoiles.', answer: 'regarde' },
-{ question: 'we watch  nous ____ <br> Example: nous _______ un match de football.', answer: 'regardons' },
-{ question: 'you watch  vous ____ <br> Example: vous ________ une série.', answer: 'regardez' },
-{ question: 'they watch  ils elles ____ <br> Example: ils _______ des vidéos.', answer: 'regardent' },
-
-
-
-
-{ question: "mettre (put a meter in front of you) - to _____", answer: "put" },
-{ question: "savoir - to _____", answer: "know" },
-{ question: "passer - to _____", answer: "pass" },
-
-{ question: "aimer - to _____", answer: "love" },
-{ question: "croire - to _____", answer: "think" },
-{ question: "demander - to _____", answer: "ask" },
-{ question: "rester - to _____", answer: "stay" },
-{ question: "répondre - to _____", answer: "answer" },
-{ question: "entendre - to _____", answer: "hear" },
-{ question: "penser - to _____", answer: "think" },
-{ question: "arriver - to _____", answer: "come" },
-{ question: "connaître - to _____", answer: "know" },
-{ question: "devenir - to _____", answer: "become" },
-{ question: "sentir - to _____", answer: "feel" },
-{ question: "sembler - to _____", answer: "seem" },
-{ question: "laisser - to _____", answer: "leave" },
-{ question: "rendre - to _____", answer: "return" },
-{ question: "tenir - to _____", answer: "hold" },
-{ question: "vivre - to _____", answer: "live" },
-{ question: "montrer - to _____", answer: "show" },
-{ question: "continuer - to _____", answer: "keep" },
-{ question: "commencer - to _____", answer: "start" },
-{ question: "suivre - to _____", answer: "follow" },
-{ question: "apprendre - to _____", answer: "learn" },
-{ question: "comprendre - to _____", answer: "get" },
-{ question: "porter - to _____", answer: "wear" },
-{ question: "chercher - to _____", answer: "find" },
-{ question: "sortir - to _____", answer: "exit" },
-{ question: "écrire - to _____", answer: "write" },
-{ question: "appeler - to _____", answer: "call" },
-{ question: "jouer - to _____", answer: "play" },
-{ question: "gagner - to _____", answer: "win" },
-{ question: "payer - to _____", answer: "pay" },
-{ question: "oublier - to _____", answer: "forget" },
-{ question: "travailler - to _____", answer: "work" },
-{ question: "lire - to _____", answer: "read" },
-{ question: "ouvrir - to _____", answer: "open" },
-{ question: "arrêter - to _____", answer: "stop" },
-{ question: "manger - to _____", answer: "eat" },
-{ question: "boire - to _____", answer: "drink" },
-{ question: "aider - to _____", answer: "help" },
-{ question: "courir - to _____", answer: "run" },
-{ question: "acheter - to _____", answer: "buy" },
-{ question: "changer - to _____", answer: "change" },
-{ question: "expliquer - to _____", answer: "show" },
-{ question: "préférer - to _____", answer: "like" },
-{ question: "dormir - to _____", answer: "sleep" },
-{ question: "choisir - to _____", answer: "pick" },
-{ question: "perdre - to _____", answer: "lose" },
-{ question: "compter - to _____", answer: "count" },
-{ question: "attendre - to _____", answer: "wait" },
-{ question: "servir - to _____", answer: "serve" },
-{ question: "fermer - to _____", answer: "close" },
-{ question: "se lever - to _____", answer: "rise" },
-{ question: "s'amuser - to _____", answer: "enjoy" },
-{ question: "marcher - to _____", answer: "walk" },
-{ question: "chanter - to _____", answer: "sing" },
-{ question: "danser - to _____", answer: "dance" },
-{ question: "remplir - to _____", answer: "fill" },
-{ question: "envoyer - to _____", answer: "send" },
-{ question: "permettre - to _____", answer: "allow" },
-{ question: "cuisiner - to _____", answer: "cook" },
-{ question: "conduire - to _____", answer: "drive" },
-{ question: "discuter - to _____", answer: "talk" },
-{ question: "habiter - to _____", answer: "live" },
-{ question: "rêver - to _____", answer: "dream" },
-{ question: "enseigner - to _____", answer: "teach" },
-{ question: "toucher - to _____", answer: "touch" },
-{ question: "pleurer - to _____", answer: "cry" },
-{ question: "réussir - to _____", answer: "win" },
-{ question: "falloir (i need to fall) - to _____", answer: "need" },
-
-
-
-
-
-            // Add more questions as needed
         ];
 
         let currentLevel = 1;
         let currentQuestionIndex = 0;
+        let shuffledQuestions = [];
         let timer;
         let answerTimeout;
-        const totalTime = 60000; // 60 seconds for the entire drill
+        const totalTime = 90000; // 90 seconds for the entire drill
         const answerDelay = 5000; // 5 seconds before showing correct answer
 
+        window.onload = function() {
+            shuffledQuestions = shuffleArray(questions);
+        };
 
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
 
         async function startDrill() {
             const name = document.getElementById("nameInput").value.trim();
@@ -311,7 +2512,6 @@ Nov 27 version
             try {
                 const response = await fetch(`https://script.google.com/macros/s/AKfycbySL-Nwv6Oa-Nghdxq9LiZBBGYeQPUhXKTar4yFZUTv54PVcHyOdfgtTRR_IDLkOwWd_g/exec?name=${encodeURIComponent(name)}`);
                 const data = await response.json();
-
                 if (data.error) {
                     document.getElementById("output").textContent = data.error;
                 } else {
@@ -320,9 +2520,8 @@ Nov 27 version
                     document.getElementById("userInput").style.display = "none";
                     document.getElementById("quiz").style.display = "block";
                     document.getElementById("level").textContent = `Level: ${currentLevel}`;
-                    document.getElementById("inputBox").disabled = false; // Enable input box
+                    startTimer();
                     loadQuestion();
-                    startTimer(); // Start the overall drill timer
                 }
             } catch (error) {
                 document.getElementById("output").textContent = "An error occurred while retrieving the level.";
@@ -334,64 +2533,76 @@ Nov 27 version
             timer = setTimeout(() => {
                 alert("Time is up! Submitting your progress.");
                 submitDetails();
-                endDrill(); // End the drill completely
+                endDrill();
             }, totalTime);
         }
 
         function loadQuestion() {
-            const levelQuestions = questions.slice(currentLevel - 1, currentLevel + 15);
-            const question = levelQuestions[currentQuestionIndex];
-            document.getElementById('question').innerHTML = ` ${question.question}`;
-if (question.imageUrl) {
-    document.getElementById('questionImage').src = question.imageUrl;
-    document.getElementById('questionImage').style.display = "block";
-} else {
-    document.getElementById('questionImage').style.display = "none";
-}
-            setAnswerTimeout(question.answer); // Set timeout to show the correct answer
-            focusInput(); // Automatically focus input box
-        }
-
-        function setAnswerTimeout(correctAnswer) {
             clearTimeout(answerTimeout);
+            const question = shuffledQuestions[currentQuestionIndex];
+            document.getElementById('question').innerText = question.question;
+
+            if (question.imageUrl) {
+                document.getElementById('questionImage').src = question.imageUrl;
+                document.getElementById('questionImage').style.display = "block";
+            } else {
+                document.getElementById('questionImage').style.display = "none";
+            }
+
+            if (question.options) {
+                loadChoiceQuestion(question);
+            } else {
+                loadInputQuestion(question);
+            }
+
             answerTimeout = setTimeout(() => {
-                alert(`The correct answer was: "${correctAnswer}". Please try again.`);
-                document.getElementById("feedback").textContent = "Retry with the correct answer.";
+                alert(`The correct answer was: ${question.answer}`);
+                document.getElementById('feedback').textContent = "Please enter or select the correct answer to proceed.";
             }, answerDelay);
         }
 
-        function checkAnswer() {
-            const inputBox = document.getElementById('inputBox');
-            const userAnswer = inputBox.value.trim().toLowerCase();
-            const correctAnswer = questions[currentLevel - 1 + currentQuestionIndex].answer.toLowerCase();
+        function loadChoiceQuestion(question) {
+            document.getElementById('inputBox').style.display = "none";
+            const choicesContainer = document.getElementById('choices');
+            choicesContainer.style.display = "block";
+            choicesContainer.innerHTML = "";
 
-            if (userAnswer === correctAnswer) {
+            question.options.forEach(option => {
+                const button = document.createElement('button');
+                button.innerText = option;
+                button.className = 'choice';
+                button.onclick = () => checkAnswer(option);
+                choicesContainer.appendChild(button);
+            });
+        }
+
+        function loadInputQuestion(question) {
+            document.getElementById('choices').style.display = "none";
+            const inputBox = document.getElementById('inputBox');
+            inputBox.style.display = "block";
+            inputBox.disabled = false;
+            inputBox.value = "";
+            inputBox.oninput = () => checkAnswer(inputBox.value);
+            inputBox.focus();
+        }
+
+        function checkAnswer(userAnswer) {
+            const correctAnswer = shuffledQuestions[currentQuestionIndex].answer;
+            if (userAnswer.trim().toLowerCase() === correctAnswer.toLowerCase()) {
                 document.getElementById('feedback').textContent = "Correct!";
-                inputBox.value = ""; // Clear input
-                clearTimeout(answerTimeout); // Cancel timeout if correct
-                moveToNextQuestion();
-            } else {
-                document.getElementById('feedback').textContent = "Incorrect. Try again!";
-            }
-        }
-
-        function moveToNextQuestion() {
-            currentQuestionIndex++;
-            if (currentQuestionIndex >= 15) {
-                currentQuestionIndex = 0;
-                currentLevel++;
+                currentLevel++; // Increment level on every correct answer
                 document.getElementById("level").textContent = `Level: ${currentLevel}`;
+                currentQuestionIndex++;
+                if (currentQuestionIndex >= shuffledQuestions.length) {
+                    currentQuestionIndex = 0;
+                }
+                loadQuestion();
+            } else {
+                document.getElementById('feedback').textContent = "Incorrect. Please try again!";
             }
-            loadQuestion();
-        }
-
-        function focusInput() {
-            const inputBox = document.getElementById('inputBox');
-            inputBox.focus(); // Automatically focus on the input box
         }
 
         function submitDetails() {
-            clearTimeout(timer);
             const formData = {
                 name: document.getElementById("nameInput").value.trim(),
                 level: currentLevel
@@ -417,8 +2628,6 @@ if (question.imageUrl) {
             document.getElementById("quiz").style.display = "none";
             document.getElementById("output").textContent = "Drill ended. Thank you for participating!";
         }
-
-        document.getElementById('inputBox').addEventListener('input', checkAnswer);
 
         document.getElementById("nameInput").addEventListener("keypress", function(event) {
             if (event.key === "Enter") {
