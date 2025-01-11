@@ -5,20 +5,72 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>French Drill</title>
     <style>
-        body { font-family: Arial, sans-serif; }
-        #level { position: absolute; top: 10px; right: 10px; font-size: 30px; font-weight: bold; margin-bottom: 20px; }
-        #question { margin-top: 40px; margin-bottom: 50px; font-size: 30px; }
-        #questionContainer { margin-top: 90px; }
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box;
+        }
+        #level { 
+            position: absolute; 
+            top: 10px; 
+            right: 10px; 
+            font-size: 2vw; 
+            font-weight: bold; 
+            margin-bottom: 20px; 
+        }
+        #question { 
+            margin-top: 40px; 
+            margin-bottom: 50px; 
+            font-size: 2.5vw; 
+            text-align: center;
+        }
+        #questionContainer { 
+            margin-top: 90px; 
+        }
         #questionImage { 
-            max-width: 400px; 
+            max-width: 80%; 
             max-height: 300px; 
             width: auto; 
             height: auto; 
             display: block; 
             margin: 0 auto; 
         }
-        .choice { margin: 10px 0; padding: 10px; font-size: 14px; border: 3px solid #ccc; cursor: pointer; }
-        .choice:hover { background-color: #f0f0f0; }
+        .choice {
+            margin: 10px 0; 
+            padding: 15px; 
+            font-size: 2vw; 
+            border: 3px solid #ccc; 
+            cursor: pointer; 
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: 8px;
+        }
+        .choice:hover { 
+            background-color: #f0f0f0; 
+        }
+        @media (max-width: 768px) {
+            #level, #question {
+                font-size: 5vw;
+            }
+            .choice {
+                font-size: 5vw;
+                padding: 10px;
+            }
+        }
+        @media (max-width: 480px) {
+            #level, #question {
+                font-size: 6vw;
+            }
+            .choice {
+                font-size: 6vw;
+                padding: 8px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -41,6 +93,29 @@
         const questions = [
             { question: "placeholder input problem type y = ", answer: "y", imageUrl: "https://i.postimg.cc/V5PP2LKD/9-x-13.gif" },
      
+
+///pick the integer, not in math drill yet
+{question:"-3 + 7 = ?",answer:"-3",options:["-3","0.5","2/3","9.8"],imageUrl:"https://www.algebra-class.com/images/set-of-integers.jpg"},
+{question:"Identify the integer.",answer:"1",options:["3.14","1","2/5","7.75"],imageUrl:"https://www.algebra-class.com/images/set-of-integers.jpg"},
+{question:"Pick the integer.",answer:"5",options:["0.001","1/2","5","3.3"],imageUrl:"https://www.algebra-class.com/images/set-of-integers.jpg"},
+{question:"Which option is an integer?",answer:"0",options:["-4.5","7/9","8.2","0"],imageUrl:"https://www.algebra-class.com/images/set-of-integers.jpg"},
+{question:"Select the integer from the options.",answer:"-1",options:["-1","0.333","5/4","6.6"],imageUrl:"https://www.algebra-class.com/images/set-of-integers.jpg"},
+{question:"Choose the integer from the list.",answer:"2",options:["3.5","2","1/8","-7.9"],imageUrl:"https://www.algebra-class.com/images/set-of-integers.jpg"},
+{question:"Find the integer among these numbers.",answer:"-4",options:["0.25","-4","1/3","9.01"],imageUrl:"https://www.algebra-class.com/images/set-of-integers.jpg"},
+{question:"Select the integer.",answer:"7",options:["-3.3","5/2","2.2","7"],imageUrl:"https://www.algebra-class.com/images/set-of-integers.jpg"},
+{question:"Choose the integer.",answer:"0",options:["0.77","4/3","11.11","0"],imageUrl:"https://www.algebra-class.com/images/set-of-integers.jpg"},
+{question:"Identify the integer in the list.",answer:"-2",options:["3/4","0.1","7.8","-2"],imageUrl:"https://www.algebra-class.com/images/set-of-integers.jpg"},
+
+
+
+ {
+        "question": "<span style='display: inline-block; text-align: center;'>18<br>────<br>11x - 4</span> <span style='display: inline-block; position: relative; top: -50px;'>=</span> <span style='display: inline-block; text-align: center;'>2<br>────<br>x </span> <br><br>What equation would you use to solve for x?",
+        "answer": "18x = 2(11x-4)",
+        "options": ["IDK", "18x = 11x-4", "36 = x(11x-4)", "18x = 2(11x-4)"],
+        "imageUrl": ""
+    },
+
+
 
 
     {
@@ -2480,6 +2555,448 @@
             { question: "They must - ils/elles ____", answer: "doivent", options: ["dois", "doit", "devons", "doivent"], imageUrl: "" },
 
 
+
+//january 6 2025
+    {
+        "question": "I build a sandcastle at the beach. Je ____ un château de sable à la plage.",
+        "answer": "construis",
+        "options": ["dessine", "remplis", "construis", "partage"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You clean your room every Saturday. Tu ____ ta chambre tous les samedis.",
+        "answer": "nettoies",
+        "options": ["cherches", "nettoies", "fais", "apprends"],
+        "imageUrl": ""
+    },
+    {
+        "question": "He cooks dinner for his family. Il ____ le dîner pour sa famille.",
+        "answer": "prépare",
+        "options": ["répare", "cherche", "prépare", "garde"],
+        "imageUrl": ""
+    },
+    {
+        "question": "We invent solutions to complex problems. Nous ____ des solutions à des problèmes complexes.",
+        "answer": "inventons",
+        "options": ["inventons", "planifions", "écrivons", "dessinons"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You (formal) paint a beautiful landscape. Vous ____ un beau paysage.",
+        "answer": "peignez",
+        "options": ["dessinez", "écrivez", "peignez", "videz"],
+        "imageUrl": ""
+    },
+    {
+        "question": "They repair the old bridge. Ils ____ le vieux pont.",
+        "answer": "réparent",
+        "options": ["réparent", "ouvrent", "partagent", "nettoient"],
+        "imageUrl": ""
+    },
+    {
+        "question": "I erase mistakes in my notebook. J'____ les erreurs dans mon cahier.",
+        "answer": "efface",
+        "options": ["efface", "remplis", "ferme", "garde"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You design a new website. Tu ____ un nouveau site web.",
+        "answer": "dessines",
+        "options": ["peins", "plantes", "ouvres", "dessines"],
+        "imageUrl": ""
+    },
+    {
+        "question": "He organizes his desk before starting work. Il ____ son bureau avant de commencer à travailler.",
+        "answer": "organise",
+        "options": ["prépare", "nettoie", "organise", "dessine"],
+        "imageUrl": ""
+    },
+    {
+        "question": "We share our ideas during the meeting. Nous ____ nos idées pendant la réunion.",
+        "answer": "partageons",
+        "options": ["écrivons", "partageons", "réparons", "ouvrons"],
+        "imageUrl": ""
+    },
+
+
+
+
+    {
+        "question": "I forgive mistakes easily. Je ____ facilement les erreurs.",
+        "answer": "pardonne",
+        "options": ["pardonne", "doute", "déteste", "découvre"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You hide the gift under the table. Tu ____ le cadeau sous la table.",
+        "answer": "caches",
+        "options": ["regardes", "caches", "cries", "ouvres"],
+        "imageUrl": ""
+    },
+    {
+        "question": "He borrows a book from the library. Il ____ un livre à la bibliothèque.",
+        "answer": "emprunte",
+        "options": ["emprunte", "lit", "garde", "rend"],
+        "imageUrl": ""
+    },
+    {
+        "question": "We sing a traditional song together. Nous ____ une chanson traditionnelle ensemble.",
+        "answer": "entonnons",
+        "options": ["dansons", "préparons", "entonnons", "jouons"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You (formal) greet the guests warmly. Vous ____ chaleureusement les invités.",
+        "answer": "saluez",
+        "options": ["écrivez", "saluez", "aidez", "écoutez"],
+        "imageUrl": ""
+    },
+    {
+        "question": "They push the heavy door open. Ils ____ la porte lourde.",
+        "answer": "poussent",
+        "options": ["poussent", "ferment", "tirent", "portent"],
+        "imageUrl": ""
+    },
+    {
+        "question": "I sew a new dress for the event. Je ____ une nouvelle robe pour l'événement.",
+        "answer": "couds",
+        "options": ["couds", "découpe", "dessine", "crée"],
+        "imageUrl": ""
+    },
+    {
+        "question": "You repeat the instructions for the class. Tu ____ les consignes pour la classe.",
+        "answer": "répètes",
+        "options": ["répètes", "cries", "ouvres", "gardes"],
+        "imageUrl": ""
+    },
+    {
+        "question": "He delivers packages quickly. Il ____ des colis rapidement.",
+        "answer": "livre",
+        "options": ["pense", "répare", "livre", "conduit"],
+        "imageUrl": ""
+    },
+    {
+        "question": "We admire the beautiful artwork. Nous ____ la belle œuvre d'art.",
+        "answer": "admirons",
+        "options": ["préparons", "admirons", "dessinons", "observons"],
+        "imageUrl": ""
+    },
+
+{
+    "question": "I am very happy today. <br> Je ____ très heureux aujourd'hui.",
+    "answer": "suis",
+    "options": ["suis", "ai", "fais", "vais"],
+    "imageUrl": ""
+},
+{
+    "question": "You go to the store every day. <br> Tu ____ au magasin tous les jours.",
+    "answer": "vas",
+    "options": ["vas", "es", "fais", "as"],
+    "imageUrl": ""
+},
+{
+    "question": "He is at the park this afternoon. <br> Il ____ au parc cet après-midi.",
+    "answer": "est",
+    "options": ["est", "a", "fait", "va"],
+    "imageUrl": ""
+},
+{
+    "question": "We have a big family. <br> Nous ____ une grande famille.",
+    "answer": "avons",
+    "options": ["avons", "sommes", "allons", "faisons"],
+    "imageUrl": ""
+},
+{
+    "question": "You (formal) do your best every day. <br> Vous ____ de votre mieux chaque jour.",
+    "answer": "faites",
+    "options": ["faites", "êtes", "avez", "allez"],
+    "imageUrl": ""
+},
+{
+    "question": "They go to school by bus. <br> Ils ____ à l'école en bus.",
+    "answer": "vont",
+    "options": ["vont", "sont", "font", "ont"],
+    "imageUrl": ""
+},
+{
+    "question": "I have a good idea. <br> J'____ une bonne idée.",
+    "answer": "ai",
+    "options": ["ai", "suis", "vais", "fais"],
+    "imageUrl": ""
+},
+{
+    "question": "You are very kind. <br> Tu ____ très gentil.",
+    "answer": "es",
+    "options": ["es", "as", "vas", "fais"],
+    "imageUrl": ""
+},
+{
+    "question": "He does his homework every evening. <br> Il ____ ses devoirs chaque soir.",
+    "answer": "fait",
+    "options": ["fait", "va", "est", "a"],
+    "imageUrl": ""
+},
+{
+    "question": "We are proud of our team. <br> Nous ____ fiers de notre équipe.",
+    "answer": "sommes",
+    "options": ["sommes", "avons", "faisons", "allons"],
+    "imageUrl": ""
+},
+
+{
+    "question": "I take a bus to work. <br> Je ____ un bus pour aller au travail.",
+    "answer": "prends",
+    "options": ["prends", "mets", "viens", "fais"],
+    "imageUrl": ""
+},
+{
+    "question": "You wait for your friends at the café. <br> Tu ____ tes amis au café.",
+    "answer": "attends",
+    "options": ["attends", "écoutes", "joues", "manges"],
+    "imageUrl": ""
+},
+{
+    "question": "He finishes his homework before dinner. <br> Il ____ ses devoirs avant le dîner.",
+    "answer": "finit",
+    "options": ["finit", "écrit", "lit", "parle"],
+    "imageUrl": ""
+},
+{
+    "question": "We drink coffee in the morning. <br> Nous ____ du café le matin.",
+    "answer": "buvons",
+    "options": ["buvons", "lisons", "allons", "mangeons"],
+    "imageUrl": ""
+},
+{
+    "question": "You (formal) write a letter to your friend. <br> Vous ____ une lettre à votre ami.",
+    "answer": "écrivez",
+    "options": ["écrivez", "parlez", "dessinez", "voyez"],
+    "imageUrl": ""
+},
+{
+    "question": "They read books every weekend. <br> Ils ____ des livres chaque week-end.",
+    "answer": "lisent",
+    "options": ["lisent", "jouent", "prennent", "regardent"],
+    "imageUrl": ""
+},
+{
+    "question": "I run in the park every morning. <br> Je ____ dans le parc chaque matin.",
+    "answer": "cours",
+    "options": ["cours", "viens", "marche", "danse"],
+    "imageUrl": ""
+},
+{
+    "question": "You understand the instructions clearly. <br> Tu ____ bien les instructions.",
+    "answer": "comprends",
+    "options": ["comprends", "vois", "manges", "partages"],
+    "imageUrl": ""
+},
+{
+    "question": "He learns French quickly. <br> Il ____ le français rapidement.",
+    "answer": "apprend",
+    "options": ["apprend", "prend", "joue", "entend"],
+    "imageUrl": ""
+},
+{
+    "question": "We come to the party together. <br> Nous ____ à la fête ensemble.",
+    "answer": "venons",
+    "options": ["venons", "parlons", "restons", "voyons"],
+    "imageUrl": ""
+},
+
+{
+    "question": "He sat on the chair to read a book. <br> Il s'est assis sur la ____ pour lire un livre.",
+    "answer": "chaise",
+    "options": ["chaise", "canapé", "table", "repose-pied"],
+    "imageUrl": ""
+},
+{
+    "question": "The floor was covered in colorful tiles. <br> Le ____ était recouvert de carreaux colorés.",
+    "answer": "sol",
+    "options": ["sol", "plafond", "mur", "cheminée"],
+    "imageUrl": ""
+},
+{
+    "question": "She wore a warm sweater on the cold day. <br> Elle portait un ____ chaud par ce jour froid.",
+    "answer": "pull",
+    "options": ["pull", "manteau", "écharpe", "blouson"],
+    "imageUrl": ""
+},
+{
+    "question": "His wife cooked a delicious meal. <br> Sa ____ a préparé un repas délicieux.",
+    "answer": "femme",
+    "options": ["femme", "mère", "sœur", "amie"],
+    "imageUrl": ""
+},
+{
+    "question": "Her husband repaired the broken faucet. <br> Son ____ a réparé le robinet cassé.",
+    "answer": "mari",
+    "options": ["mari", "frère", "oncle", "voisin"],
+    "imageUrl": ""
+},
+{
+    "question": "The microwave was used to heat the leftovers. <br> Le ____ a été utilisé pour chauffer les restes.",
+    "answer": "micro-ondes",
+    "options": ["micro-ondes", "four", "grille-pain", "bouilloire"],
+    "imageUrl": ""
+},
+{
+    "question": "He leaned back in the comfortable recliner. <br> Il s'est penché en arrière dans le ____ confortable.",
+    "answer": "fauteuil inclinable",
+    "options": ["fauteuil inclinable", "canapé", "chaise longue", "tabouret"],
+    "imageUrl": ""
+},
+{
+    "question": "The actor performed brilliantly in the play. <br> L'____ a joué brillamment dans la pièce.",
+    "answer": "acteur",
+    "options": ["acteur", "artiste", "chanteur", "écrivain"],
+    "imageUrl": ""
+},
+{
+    "question": "We bought toilet paper at the store. <br> Nous avons acheté du ____ au magasin.",
+    "answer": "papier toilette",
+    "options": ["papier toilette", "essuie-tout", "serviette", "mouchoir"],
+    "imageUrl": ""
+},
+{
+    "question": "The stove was turned off after cooking. <br> La ____ a été éteinte après la cuisson.",
+    "answer": "cuisinière",
+    "options": ["cuisinière", "four", "micro-ondes", "grill"],
+    "imageUrl": ""
+}, 
+
+
+
+    {
+        "question": "What is the correct article for the word 'livre' (book)? <br> ____ livre est sur la table.",
+        "answer": "Le",
+        "options": ["Le", "La", "Les", "Un"],
+        "imageUrl": ""
+    },
+    {
+        "question": "Choose the correct article for 'maison' (house): <br> ____ maison est grande.",
+        "answer": "La",
+        "options": ["Le", "La", "Les", "Une"],
+        "imageUrl": ""
+    },
+    {
+        "question": "What is the plural form of 'le stylo' (pen)? <br> ____ stylos sont dans la trousse.",
+        "answer": "Les",
+        "options": ["Les", "Le", "Des", "Un"],
+        "imageUrl": ""
+    },
+    {
+        "question": "Fill in the blank: <br> J'ai acheté ____ chien hier.",
+        "answer": "Un",
+        "options": ["Un", "Le", "La", "Une"],
+        "imageUrl": ""
+    },
+    {
+        "question": "Choose the correct article for 'fleur' (flower): <br> J'ai vu ____ belle fleur dans le jardin.",
+        "answer": "Une",
+        "options": ["Une", "Le", "Des", "Un"],
+        "imageUrl": ""
+    },
+    {
+        "question": "What article matches the plural noun 'animaux' (animals)? <br> J'aime beaucoup ____ animaux.",
+        "answer": "Des",
+        "options": ["Des", "Les", "Le", "Un"],
+        "imageUrl": ""
+    },
+    {
+        "question": "Which article correctly completes this sentence? <br> Il y a trop ____ bruit ici.",
+        "answer": "Du",
+        "options": ["Du", "Le", "Des", "Un"],
+        "imageUrl": ""
+    },
+    {
+        "question": "Which demonstrative adjective matches this sentence? <br> ____ livre est très intéressant.",
+        "answer": "Ce",
+        "options": ["Ce", "Cet", "Cette", "Ces"],
+        "imageUrl": ""
+    },
+    {
+        "question": "Fill in the blank for a masculine noun starting with a vowel: <br> ____ homme est gentil.",
+        "answer": "Cet",
+        "options": ["Cet", "Ce", "Cette", "Ces"],
+        "imageUrl": ""
+    },
+    {
+        "question": "Choose the correct demonstrative adjective for the sentence: <br> ____ maison est à vendre.",
+        "answer": "Cette",
+        "options": ["Cette", "Ce", "Cet", "Ces"],
+        "imageUrl": ""
+    },
+
+
+    {
+        "question": "Which pronoun completes the sentence? <br> ____ est arrivé en retard ce matin.",
+        "answer": "Il",
+        "options": ["Il", "Elle", "Ils", "Elles"],
+        "imageUrl": ""
+    },
+    {
+        "question": "Choose the correct pronoun for the sentence: <br> ____ est très gentille et travailleuse.",
+        "answer": "Elle",
+        "options": ["Elle", "Il", "Elles", "Ils"],
+        "imageUrl": ""
+    },
+    {
+        "question": "Fill in the blank: <br> ____ jouent au football dans le parc.",
+        "answer": "Ils",
+        "options": ["Ils", "Il", "Elles", "On"],
+        "imageUrl": ""
+    },
+    {
+        "question": "What pronoun fits here? <br> ____ parlent toutes en même temps.",
+        "answer": "Elles",
+        "options": ["Elles", "Ils", "Elle", "On"],
+        "imageUrl": ""
+    },
+    {
+        "question": "Which pronoun works in this sentence? <br> ____ va faire les courses cet après-midi.",
+        "answer": "On",
+        "options": ["On", "Elle", "Tu", "Il"],
+        "imageUrl": ""
+    },
+    {
+        "question": "Which pronoun completes the sentence? <br> ____ suis fatigué après une longue journée.",
+        "answer": "Je",
+        "options": ["Je", "Nous", "Tu", "On"],
+        "imageUrl": ""
+    },
+    {
+        "question": "Choose the correct pronoun: <br> Est-ce que ____ as vu mon sac?",
+        "answer": "Tu",
+        "options": ["Tu", "Je", "Vous", "On"],
+        "imageUrl": ""
+    },
+    {
+        "question": "Fill in the blank: <br> ____ avons décidé de partir en vacances en juillet.",
+        "answer": "Nous",
+        "options": ["Nous", "Vous", "Ils", "Je"],
+        "imageUrl": ""
+    },
+    {
+        "question": "Choose the correct pronoun for the sentence: <br> Est-ce que ____ avez besoin d'aide?",
+        "answer": "Vous",
+        "options": ["Vous", "Nous", "Tu", "Ils"],
+        "imageUrl": ""
+    },
+    {
+        "question": "What pronoun completes this sentence? <br> Laisse-moi faire, c'est à ____!",
+        "answer": "Moi",
+        "options": ["Moi", "Nous", "Toi", "Lui"],
+        "imageUrl": ""
+    },
+
+
+
+
+
+
+
+//end of questions
         ];
 
         let currentLevel = 1;
