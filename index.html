@@ -63,7 +63,7 @@ h1{font-family:var(--f-script);font-weight:400;font-size:clamp(1.4rem,4.2vh,2.6r
 /* progress strip */
 .strip{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:6px;flex:none}
 @media (max-width:640px){.strip{grid-template-columns:repeat(5,minmax(0,1fr))}}
-.strip.five{grid-template-columns:repeat(5,minmax(0,1fr))}
+.strip.few{grid-template-columns:repeat(var(--n,3),minmax(0,1fr));max-width:560px}
 .cell{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:clamp(3px,.8vh,8px) 4px;display:flex;flex-direction:column;align-items:center;gap:4px;min-width:0}
 .cell span{font-size:clamp(.78rem,.55rem + .75vw,1.2rem);font-weight:500;color:var(--ink-soft);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .cell.active{border-color:var(--ink)}
@@ -210,6 +210,10 @@ form.typed input.wrong{color:var(--ink-soft)}
 .sets-top{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
 .setsub{margin:12px 0 0;font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft)}
 .setrow.finished{opacity:.7}
+.goto{display:flex;align-items:center;gap:8px;flex-wrap:wrap;color:var(--ink);font-weight:600}
+.goto input{width:5em;font:inherit;padding:6px 10px;border-radius:8px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink)}
+.goto .btn{font-size:.9rem;padding:6px 14px}
+#syncNote{font-size:.85rem}
 .setrow{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 0;border-bottom:1px dashed var(--rule-strong)}
 .setrow > div{flex:1;min-width:0}
 .setrow b{color:var(--ink);font-size:1.05rem}
@@ -324,6 +328,8 @@ form.typed input.wrong{color:var(--ink-soft)}
 </div>
 <div class="panel setspanel" id="setsPanel" hidden>
   <div class="sets-top"><p class="panel-title">Sets</p><button class="linkish" id="hideDone" type="button"></button></div>
+  <form class="goto" id="gotoForm"><label for="gotoN">Jump to set</label><input id="gotoN" type="number" min="1" inputmode="numeric" placeholder="11"><button class="btn ghost" type="submit">Go</button></form>
+  <p class="panel-note" id="syncNote"></p>
   <div class="setlist" id="setList"></div>
   <div class="actions"><button class="btn ghost" id="resetAll" type="button">Reset everything</button><button class="btn" id="setsClose" type="button">Close</button></div>
 </div>
@@ -377,15 +383,15 @@ const BASE = [
 const STAGES = ["See it","Spot it","Build it","Hear it","Type it","Use it","Translate"];
 const TYPES = ["mcEn","mcFr","build","hear","type","cloze","toEn"], TYPE_LVL = 4;
 let WORDS = BASE.slice();
-const MAX = STAGES.length, POOL = 3, SET = 5, KEY = "dixmots-v3";
+const MAX = STAGES.length, POOL = 3, SET = 3, KEY = "dixmots-v3";
 const $ = s => document.querySelector(s);
 const stage = $("#stage");
 let S, t0 = Date.now(), locked = false, interacted = false;
 document.addEventListener("pointerdown", () => interacted = true, {once:true});
 document.addEventListener("keydown", () => interacted = true, {once:true});
 
-function fresh(){ return {mode:"start", set:0, items:WORDS.map(()=>({level:0,wrong:0,in:false,box:-1,due:0})), pool:[], nextIntro:0, last:-1, total:0, right:0, elapsed:0, cur:null, review:null, extra:(S && S.extra) || [], steps7:true, known:(S && S.known) || [], unknownQ:(S && S.unknownQ) || [], listFrom:(S && S.listFrom) || 0}; }
-function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+function fresh(){ return {mode:"start", set:0, items:WORDS.map(()=>({level:0,wrong:0,in:false,box:-1,due:0})), pool:[], nextIntro:0, last:-1, total:0, right:0, elapsed:0, cur:null, review:null, extra:(S && S.extra) || [], steps7:true, setSize:SET, known:(S && S.known) || [], unknownQ:(S && S.unknownQ) || [], listFrom:(S && S.listFrom!=null) ? S.listFrom : 300}; }
+function save(){ S.savedAt = Date.now(); try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} if(typeof cloudSoon==="function") cloudSoon(); }
 function load(){
   const r = loadRaw();
   if(r && !r.steps7){ r.items.forEach(it => { if(it.level>=6) it.level = 7; }); r.steps7 = true; r.cur = null; }
@@ -517,7 +523,21 @@ const speakBtn = (text,label) => canSpeak ? `<button class="speak" type="button"
 stage.addEventListener("click", e => { const b=e.target.closest("[data-say]"); if(b) speak(b.dataset.say); });
 
 function toast(msg){ const t=$("#toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(toast.h); toast.h=setTimeout(()=>t.classList.remove("show"),1400); }
-function paint(top, html, cls){ if(typeof listenKeys!=="undefined") listenKeys = null; if(typeof trickCtl!=="undefined" && trickCtl){ trickCtl.abort(); trickCtl = null; } stage.classList.remove("missed"); stage.innerHTML = (top||"") + `<div class="body ${cls||""}">${html}</div>`; stage.scrollTop = 0; }
+let cardNo = 0;
+/* play audio; if nothing has been typed or tapped 2 s after it ends, play it again (up to 3 times) */
+function playUntilAnswered(text, rate, busy){
+  const card = cardNo; let n = 0;
+  const play = () => {
+    if(card !== cardNo || busy()) return;
+    const u = speak(text, rate);
+    let done = false;
+    const after = () => { if(done) return; done = true; if(n++ < 3) setTimeout(play, 2000); };
+    if(u){ u.onend = after; u.onerror = after; }
+    setTimeout(after, 1500 + String(text).length * 110);   /* in case the voice never reports the end */
+  };
+  play();
+}
+function paint(top, html, cls){ cardNo++; if(typeof listenKeys!=="undefined") listenKeys = null; if(typeof trickCtl!=="undefined" && trickCtl){ trickCtl.abort(); trickCtl = null; } stage.classList.remove("missed"); stage.innerHTML = (top||"") + `<div class="body ${cls||""}">${html}</div>`; stage.scrollTop = 0; }
 
 function mastered(){ return S.items.filter(it=>it.level>=MAX).length; }
 function renderChrome(){
@@ -525,7 +545,7 @@ function renderChrome(){
   const showAll = S.mode==="start" || S.mode==="done";
   const many = WORDS.length > 10, checking = S.mode==="drill" || (S.review && S.review.kind.startsWith("check"));
   const shown = !many ? range(0,WORDS.length) : checking ? setRange(S.set) : [];
-  const st = $("#strip"); st.hidden = !shown.length || listOpen; st.classList.toggle("five", many);
+  const st = $("#strip"); st.hidden = !shown.length || listOpen; st.classList.toggle("few", many); st.style.setProperty("--n", Math.max(1, shown.length));
     st.innerHTML = shown.map(i=>{ const w=WORDS[i]; const it=S.items[i]; const done=it.level>=MAX;
     const later = !showAll && !it.in && Math.floor(i/SET) > S.set;
     const label = it.in || showAll ? w.fr : "·····";
@@ -553,7 +573,7 @@ function renderStart(){
     </div>
     <ol class="steps">${STAGES.map(s=>`<li>${s}</li>`).join("")}</ol>
     <div class="actions"><button class="btn" id="go" type="button">Start</button></div>`, "start");
-  $("#go").onclick = () => { const k = nextOpenSet(-1); if(k < 0){ S.mode = "done"; save(); return renderDone(); } enterSet(k); save(); next(); };
+  $("#go").onclick = () => { const k = openOrNewSet(-1); if(k < 0){ S.mode = "done"; save(); return renderDone(); } enterSet(k); save(); next(); };
   $("#go").focus();
 }
 
@@ -570,11 +590,12 @@ function next(){
     if(S.sess && SESSION - S.sess.used < (hi-lo) * (S.avgAns || 8)) return finishSet();
     return startReview("check"+S.set, range(lo,hi));
   }
-  const roomy = stepsAllowed() >= 7;   /* extras only when the 5 minutes allow it */
+  const roomy = stepsAllowed() >= 7;   /* extras only when the time allows it */
   /* every few answers, a listening question built from words you've learned */
   maybeGenSentences();
   /* every few answers: a round with several words at once (build a sentence, fill gaps, listen) */
-  if((S.sinceListen||0) >= (roomy ? 3 : 6)){ const r = mixRound(); if(r){ S.sinceListen = 0; save(); return r(); } }
+  const timeLeft = S.sess ? SESSION - S.sess.used : 999;
+  if(timeLeft > 30 && (S.sinceListen||0) >= (roomy ? 3 : 6)){ const r = mixRound(); if(r){ S.sinceListen = 0; save(); return r(); } }
   if(S.pool.length < POOL && S.nextIntro < hi){ S.cur={type:"learn", idx:S.nextIntro}; save(); return render(); }
   /* safety: never leave the pool empty while words in this set still need work */
   S.pool = S.pool.filter(i => i < WORDS.length && S.items[i].level < MAX);
@@ -613,7 +634,8 @@ function render(){
       <p class="meaning">${w.en}</p>
       ${hookFor(w, c.idx) ? `<p class="hook">${hookFor(w, c.idx)}</p>` : ""}
       ${w.ex ? `<p class="ex"><span class="fr" lang="fr">${w.ex}</span>${speakBtn(w.ex,"Hear the sentence")}<span class="en">${w.exEn}</span></p>` : ""}
-      <div class="actions"><button class="btn" id="got" type="button">Got it</button></div>`, "learn");
+      <div class="actions"><button class="btn" id="got" type="button">Got it</button><button class="btn ghost" id="knowIt" type="button">I know it</button></div>`, "learn");
+    $("#knowIt").onclick = () => knowIt(c.idx);
     $("#got").onclick = () => { S.items[c.idx].in=true; S.pool.push(c.idx); S.nextIntro++; S.last=c.idx; next(); };
     $("#got").focus();
     if(interacted){ speak(w.fr); readSentence(w.ex, true); }
@@ -678,9 +700,9 @@ function typedBody(f, w){
   return `<p class="prompt">${cueFor(w)}</p>`;
 }
 function wireHear(w){
-  $("#play").onclick = () => { speak(w.fr); $("#answer").focus(); };
-  $("#slow").onclick = () => { speak(w.fr, .55); $("#answer").focus(); };
-  setTimeout(() => speak(w.fr), 250);
+  $("#play").onclick = () => { speak(w.fr); const a = $("#answer"); if(a) a.focus(); };
+  $("#slow").onclick = () => { speak(w.fr, .55); const a = $("#answer"); if(a) a.focus(); };
+  setTimeout(() => playUntilAnswered(w.fr, .95, () => { const a = $("#answer"); return locked || !!(a && a.value.trim()); }), 250);
 }
 
 function typedForm(f){
@@ -847,7 +869,7 @@ function startReview(kind, idxs, ret){
 function finishReview(){
   const R = S.review;
   if(R.kind.startsWith("check")){
-    const nk = nextOpenSet(+R.kind.slice(5));
+    const nk = openOrNewSet(+R.kind.slice(5));
     if(nk >= 0){ enterSet(nk); S.review = null; save(); return renderSetBreak(R, +R.kind.slice(5)); }
   }
   if(R.ret==="drill"){ S.mode = "drill"; S.review = null; S.cur = null; save(); return next(); }
@@ -866,6 +888,11 @@ function nextOpenSet(after){
   return -1;
 }
 function enterSet(k){
+  /* a short last set gets topped up to a full set with new words */
+  if(k === nSets()-1 && setRange(k).length < SET && typeof newCandidates === "function"){
+    const cards = newCandidates(SET - setRange(k).length);
+    if(cards.length){ S.extra = (S.extra||[]).concat(cards); WORDS = BASE.concat(S.extra); cards.forEach(() => S.items.push({level:0,wrong:0,in:false,box:-1,due:0})); enrichCards(cards); }
+  }
   const r = setRange(k);
   S.set = k; S.mode = "drill"; S.cur = null; S.last = -1; S.sess = null;
   S.pool = r.filter(i => S.items[i].in && S.items[i].level < MAX);
@@ -883,7 +910,7 @@ function markSetDone(k){
   const working = S.mode==="drill" || (S.mode==="review" && S.review && S.review.kind.startsWith("check"));
   if(working && S.set===k){
     S.review = null;
-    const nk = nextOpenSet(k);
+    const nk = openOrNewSet(k);
     openSets(false);
     if(nk < 0){ S.mode = "done"; S.cur = null; save(); return renderDone(); }
     enterSet(nk); save(); return renderSetBreak(null, -1, `Set ${nk+1}`);
@@ -922,6 +949,7 @@ function openSets(open){
   $("#setList").querySelectorAll("[data-set]").forEach(b => b.onclick = () => restartSet(+b.dataset.set));
   $("#setList").querySelectorAll("[data-done]").forEach(b => b.onclick = () => markSetDone(+b.dataset.done));
   const ra = $("#resetAll"); ra.classList.remove("danger"); ra.textContent = "Reset everything";
+  showSync();
   $("#setsClose").focus();
 }
 function renderSetBreak(R, prev, label){
@@ -998,8 +1026,8 @@ function renderDone(){
     <div class="recap${WORDS.length>12?" many":""}" style="--rows:${Math.ceil(WORDS.length/2)}">${order.map(i=>{ const it=S.items[i]; const isDue = it.box>=0 && it.due<=Date.now();
       return `<div class="rc${isDue?" is-due":""}"><b lang="fr">${WORDS[i].fr}</b><span class="en">${WORDS[i].en}</span>${miss(i)}<span class="when">${it.box<0?"—":shortWhen(it.due)}</span></div>`; }).join("")}</div>
     ${sub}
-    <div class="actions">${due.length ? `<button class="btn" id="rev" type="button">Review now</button>` : `<button class="btn ghost" id="rev" type="button">Practice all ${WORDS.length}</button>`}</div>`, "done");
-  $("#rev").onclick = () => due.length ? startReview("due", due) : startReview("full", range(0,WORDS.length));
+    <div class="actions">${due.length ? `<button class="btn" id="rev" type="button">Review now</button>` : `<button class="btn" id="rev" type="button">Next set</button>`}</div>`, "done");
+  $("#rev").onclick = () => { if(due.length) return startReview("due", due); const k = openOrNewSet(-1); if(k < 0) return startReview("full", range(0,WORDS.length)); enterSet(k); save(); renderSetBreak(null, -1, `Set ${k+1}`); };
   $("#rev").focus();
 }
 setInterval(() => { if(S && S.mode==="done" && dueList().length!==homeDue) renderDone(); }, 30000);
@@ -1231,7 +1259,7 @@ function renderList(){
   $("#listView").innerHTML = `
     <div class="lhead">
       <select id="listFrom" aria-label="Where to start in the word list">${sel}</select>
-      <span class="lq"><b>${q}</b>/5 for the next set</span>
+      <span class="lq"><b>${q}</b>/${SET} for the next set</span>
       ${q ? `<button class="linkish" id="makeNow" type="button">Make set now</button>` : ""}
       ${listHist.length ? `<button class="linkish" id="undoMark" type="button">Undo</button>` : ""}
     </div>
@@ -1437,7 +1465,7 @@ function renderListen(q){
   if(canHear){
     $("#play").onclick = () => speak(q.fr, .9);
     $("#slow").onclick = () => speak(q.fr, .6);
-    setTimeout(() => speak(q.fr, .9), 250);
+    setTimeout(() => playUntilAnswered(q.fr, .9, () => answered), 250);
   }
   let answered = false;
   const choose = b => {
@@ -1463,8 +1491,8 @@ document.addEventListener("keydown", e => {
 });
 
 
-/* ---------- 5-minute sets: each set gets 5 minutes, and the steps are paced to fit ---------- */
-const SESSION = 300, IDLE = 45e3;
+/* ---------- 2-minute sets: each set gets 2 minutes, and the steps are paced to fit ---------- */
+const SESSION = 120, IDLE = 45e3;
 let lastAct = Date.now();
 ["pointerdown","keydown"].forEach(ev => document.addEventListener(ev, () => { lastAct = Date.now(); }, true));
 function newSession(){ S.sess = {used:0, set:S.set, total0:S.total, right0:S.right, mast0:mastered(), over:false}; save(); showTimer(); }
@@ -1516,7 +1544,7 @@ function finishSet(){
 function renderSetEnd(){
   S.cur = null; renderChrome(); showTimer();
   const s = S.sess, n = S.total - s.total0, r = S.right - s.right0;
-  const k = nextOpenSet(s.set);
+  const k = openOrNewSet(s.set);
   paint("", `
     <p class="prompt">Set ${s.set+1} ✓ Bien joué !</p>
     <div class="bignums">
@@ -1801,14 +1829,134 @@ function renderGaps(pool){
   });
 }
 
+
+/* ---------- new sets appear by themselves ---------- */
+/* words you marked "Don't know" first, then the next common words you haven't marked "Know" */
+function newCandidates(n){
+  const out = []; S.unknownQ = S.unknownQ || [];
+  while(out.length < n && S.unknownQ.length) out.push(S.unknownQ.shift());
+  if(out.length < n){
+    const have = new Set(out.map(w => norm(w.fr)));
+    for(const i of listCandidates(n * 3)){
+      if(out.length >= n) break;
+      const lemma = dict().L[i][0]; if(have.has(norm(lemma))) continue;
+      const c = dictCard({fr:lemma, en:""}); if(c){ out.push(c); have.add(norm(lemma)); }
+    }
+  }
+  return out;
+}
+function autoNewSet(){
+  const start = WORDS.length, room = SET - (start % SET);
+  const cards = newCandidates(room); if(!cards.length) return -1;
+  S.extra = (S.extra||[]).concat(cards); WORDS = BASE.concat(S.extra);
+  cards.forEach(() => S.items.push({level:0,wrong:0,in:false,box:-1,due:0}));
+  save(); enrichCards(cards);
+  return Math.floor(start / SET);
+}
+const openOrNewSet = after => { const k = nextOpenSet(after); return k >= 0 ? k : autoNewSet(); };
+/* "I know it" on a new word: skip it; an added word is swapped for a fresh one */
+function knowIt(i){
+  const w = WORDS[i];
+  S.known = [...new Set([...(S.known||[]), w.fr])];
+  if(i >= BASE.length){
+    const repl = newCandidates(1)[0];
+    if(repl){ S.extra[i - BASE.length] = repl; WORDS = BASE.concat(S.extra); S.items[i] = {level:0,wrong:0,in:false,box:-1,due:0}; save(); enrichCards([repl]); toast(`Skipped ${w.fr}`); S.cur = {type:"learn", idx:i}; return render(); }
+  }
+  const it = S.items[i]; it.in = true; it.level = MAX; it.box = -1;
+  S.nextIntro = Math.max(S.nextIntro, i+1); save(); toast(`Skipped ${w.fr}`); next();
+}
+/* jump straight to a set number, e.g. after finishing sets on another computer */
+function goToSet(n){
+  n = Math.max(1, Math.floor(n) || 1);
+  while(nSets() < n){ if(autoNewSet() < 0) break; }
+  n = Math.min(n, nSets());
+  for(let k = 0; k < n-1; k++) setRange(k).forEach(i => { const it = S.items[i]; if(it.level < MAX){ it.level = MAX; it.in = true; } });
+  S.pool = S.pool.filter(i => S.items[i].level < MAX);
+  toast(`Sets 1–${n-1} marked done`);
+  restartSet(n-1);
+}
+
+/* ---------- progress saved to your Claude account (online page) ---------- */
+let cloud = null, cloudTimer = null, cloudState = "local";
+function cloudPayload(){
+  const t = JSON.parse(JSON.stringify(S));
+  t.sentences = (t.sentences||[]).filter(s => !s.used).slice(0, 12);
+  delete t.heard; delete t.built;
+  t.items.forEach(it => { delete it.ctx; delete it.ctxAsked; });   /* sentences are rewritten as needed */
+  return {state: JSON.stringify(t), savedAt: S.savedAt || Date.now()};
+}
+function cloudPush(){
+  if(!cloud) return;
+  clearTimeout(cloudTimer); cloudTimer = null;
+  cloud.ref.set(cloudPayload()).then(() => { cloudState = "synced"; showSync(); }).catch(e => { cloudState = e && e.code==="quota_exceeded" ? "full" : "error"; showSync(); });
+}
+function cloudSoon(){ if(cloud && !cloudTimer && ((S.total||0) > 0 || S.items.some(it => it.level > 0) || (S.extra||[]).length)) cloudTimer = setTimeout(cloudPush, 15000); }
+function showSync(){
+  const el = $("#syncNote"); if(!el) return;
+  el.textContent = cloudState==="synced" ? "Progress is saved to your Claude account, so it follows you to any computer."
+    : cloudState==="error" ? "Couldn't save to your account just now. Progress is kept in this browser."
+    : cloudState==="full" ? "Your saved progress is too large to store online. It's kept in this browser."
+    : "Progress is saved in this browser only. Use “Jump to set” to pick up where you left off on another computer.";
+}
+async function cloudInit(){
+  try{
+    if(!(window.claude && claude.use)) return;
+    const [db, user] = await Promise.all([claude.use("db"), claude.use("user")]);
+    if(!db || !user) return;
+    const uid = await user.id(); if(!uid) return;
+    const ref = db.doc("data/users/" + uid + "/progress");
+    const snap = await ref.get();
+    cloud = {ref};
+    const d = snap.exists ? snap.data() : null;
+    let remote = null; try{ remote = d && d.state ? JSON.parse(d.state) : null; }catch(e){}
+    /* how much learning a saved state holds; an untouched state never replaces real progress */
+    const amount = st => st && st.items ? (st.total||0) + st.items.filter(it => it.level > 0).length * 3 + (st.extra||[]).length : 0;
+    const mine = amount(S), theirs = amount(remote);
+    const useRemote = remote && theirs > 0 && (loadedAt ? (d.savedAt || 0) > loadedAt : theirs > mine);
+    if(useRemote){
+      /* another computer has newer progress: use it */
+      const r = remote;
+      if(r && r.items){
+        r.extra = r.extra || []; WORDS = BASE.concat(r.extra);
+        while(r.items.length < WORDS.length) r.items.push({level:0,wrong:0,in:false,box:-1,due:0});
+        S = r; try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){}
+        cloudState = "synced"; showSync(); toast("Progress loaded from your account");
+        return boot();
+      }
+    }
+    cloudState = "synced"; showSync();
+    if(mine > 0 && (!remote || theirs === 0 || !loadedAt || loadedAt > (d.savedAt || 0))) cloudPush();
+  }catch(e){ cloud = null; cloudState = "local"; showSync(); }
+}
+document.addEventListener("visibilitychange", () => { if(document.visibilityState === "hidden" && cloudTimer) cloudPush(); });
+window.addEventListener("pagehide", () => { if(cloudTimer) cloudPush(); });
+
+$("#gotoForm").onsubmit = e => { e.preventDefault(); const n = +$("#gotoN").value; if(n >= 1){ $("#gotoN").value = ""; goToSet(n); } };
+/* sets used to hold 5 words; regroup saved progress into 3-word sets */
+function regroup(){
+  if(S.setSize === SET) return;
+  S.setSize = SET;
+  if(S.review && S.review.kind && S.review.kind.startsWith("check")){ S.review = null; if(S.mode==="review") S.mode = "drill"; }
+  S.cur = null;
+  if(S.mode==="drill"){ const k = nextOpenSet(-1); if(k >= 0) enterSet(k); else { S.mode = "done"; S.sess = null; } }
+  else S.sess = null;
+  save();
+}
+function boot(){
+  if(S.listFrom == null) S.listFrom = 300;
+  regroup();
+  showTimer(); showSync();
+  if(S.sess && S.sess.over) renderSetEnd();
+  else if(S.mode==="start") renderStart();
+  else if(S.mode==="done") renderDone();
+  else if(S.mode==="review") next();
+  else if(S.cur && S.cur.type) { t0=Date.now(); render(); }
+  else next();
+}
 S = load() || fresh();
-showTimer();
-if(S.sess && S.sess.over) renderSetEnd();
-else if(S.mode==="start") renderStart();
-else if(S.mode==="done") renderDone();
-else if(S.mode==="review") next();
-else if(S.cur && S.cur.type) { t0=Date.now(); render(); }
-else next();
+const loadedAt = S.savedAt || 0;   /* compare the account copy with what this browser had, before anything changes */
+boot();
+cloudInit();
 </script>
 
 </body>
